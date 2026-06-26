@@ -229,8 +229,8 @@ export default function HomePage() {
             className="flex animate-fade-in-up flex-col items-center gap-1.5"
             style={{ animationDelay: '680ms' }}
           >
-            <span className="text-xs" style={{ color: '#334155' }}>Scroll to explore</span>
-            <span className="animate-bounce text-sm" style={{ color: '#334155' }}>↓</span>
+            <span className="text-xs" style={{ color: '#475569' }}>Scroll to explore</span>
+            <span className="animate-bounce text-sm" style={{ color: '#475569' }}>↓</span>
           </div>
         </section>
 
@@ -602,7 +602,7 @@ unshield({
               >
                 Open Guided Demo →
               </Link>
-              <p className="mt-5 text-xs" style={{ color: '#1e293b' }}>
+              <p className="mt-5 text-xs" style={{ color: '#475569' }}>
                 No mainnet. Sepolia testnet only. Connect MetaMask to begin.
               </p>
             </Reveal>
