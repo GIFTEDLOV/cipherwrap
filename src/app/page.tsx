@@ -455,7 +455,7 @@ export default function HomePage() {
                   Guided Demo
                 </div>
                 <h2 className="mb-3 font-display text-3xl font-bold text-white md:text-4xl">
-                  Six steps from zero to decrypted
+                  Wallet to decrypted balance, guided
                 </h2>
                 <p className="mb-8 max-w-lg text-sm leading-relaxed" style={{ color: '#64748b' }}>
                   A judge-friendly walkthrough with progress tracking, calm error handling,

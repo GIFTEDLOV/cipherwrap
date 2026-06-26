@@ -86,15 +86,6 @@ export function Header() {
               </Link>
             )
           })}
-          <Link
-            href="/debug/decrypt"
-            className="rounded-lg px-3 py-1.5 text-sm transition-colors"
-            style={{ color: '#475569' }}
-            onMouseEnter={e => { (e.target as HTMLElement).style.color = '#64748b' }}
-            onMouseLeave={e => { (e.target as HTMLElement).style.color = '#475569' }}
-          >
-            Debug
-          </Link>
           <div className="ml-2">
             <WalletButton />
           </div>
