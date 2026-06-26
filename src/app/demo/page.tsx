@@ -152,7 +152,7 @@ function TxSuccess({ label, hash }: { label: string; hash: Hex }) {
   )
 }
 
-// Primary CTA — full-width, solid, unmissable
+// Primary CTA — full-width, gold, unmissable
 function PrimaryBtn({
   onClick,
   disabled,
@@ -166,7 +166,7 @@ function PrimaryBtn({
     <button
       onClick={onClick}
       disabled={disabled}
-      className="w-full rounded-xl bg-cipher-500 px-5 py-3.5 text-sm font-bold text-zinc-950 transition-colors hover:bg-cipher-400 disabled:cursor-not-allowed disabled:opacity-50"
+      className="btn-gold w-full rounded-xl px-5 py-3.5 text-sm disabled:cursor-not-allowed disabled:opacity-50"
     >
       {children}
     </button>
@@ -210,7 +210,7 @@ function StepCard({
     return (
       <div
         ref={stepRef}
-        className="flex items-center gap-3 rounded-xl border border-zinc-800/30 bg-zinc-900/10 px-4 py-2.5"
+        className="flex items-center gap-3 rounded-xl border border-space-700/25 bg-space-800/10 px-4 py-2.5"
       >
         <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-xs font-bold text-black">
           ✓
@@ -226,12 +226,12 @@ function StepCard({
     return (
       <div
         ref={stepRef}
-        className="flex items-center gap-3 rounded-xl border border-zinc-900/60 px-4 py-2.5 opacity-25 select-none"
+        className="flex items-center gap-3 rounded-xl border border-space-800/40 px-4 py-2.5 opacity-25 select-none"
       >
-        <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-xs font-bold text-zinc-700">
+        <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-space-700 text-xs font-bold text-slate-600">
           {number}
         </div>
-        <span className="text-sm text-zinc-700">{title}</span>
+        <span className="text-sm text-slate-600">{title}</span>
       </div>
     )
   }
@@ -239,10 +239,10 @@ function StepCard({
   // Active / pending / failed: full spotlighted card
   const cardCls: Record<StepStatus, string> = {
     locked:    '',
-    active:    'border-cipher-600/50 bg-zinc-900/80 shadow-[0_0_0_1px_rgba(20,184,166,0.08)] shadow-cipher-500/5',
-    pending:   'border-amber-700/30 bg-amber-950/5',
+    active:    'border-cipher-600/50 bg-space-800/80 backdrop-blur-sm shadow-[0_0_24px_rgba(20,184,166,0.06)]',
+    pending:   'border-amber-700/30 bg-amber-950/5 backdrop-blur-sm',
     completed: '',
-    failed:    isCancelled ? 'border-zinc-700/50 bg-zinc-900/50' : 'border-zinc-700/50 bg-zinc-900/60',
+    failed:    isCancelled ? 'border-space-700/40 bg-space-800/40 backdrop-blur-sm' : 'border-space-700/40 bg-space-800/50 backdrop-blur-sm',
   }
   const badgeEl = isCancelled ? (
     <span className="rounded bg-zinc-700/40 px-2 py-0.5 text-xs font-medium text-zinc-500">
@@ -296,10 +296,10 @@ function StepCard({
 function ProgressBar({ completed, total }: { completed: number; total: number }) {
   const pct = total === 0 ? 0 : Math.round((completed / total) * 100)
   return (
-    <div className="mb-6 rounded-xl border border-zinc-800 bg-zinc-900/60 p-4">
+    <div className="mb-6 rounded-xl border border-blue-900/25 bg-space-800/60 p-4 backdrop-blur-sm">
       <div className="mb-3 flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-bold text-zinc-100">Judge Demo Mode</h1>
+          <h1 className="font-display text-lg font-bold text-slate-100">Judge Demo Mode</h1>
           <p className="mt-0.5 text-xs text-zinc-500">
             cUSDCMock · Sepolia testnet · end-to-end confidential token flow
           </p>
@@ -312,7 +312,7 @@ function ProgressBar({ completed, total }: { completed: number; total: number })
           <p className="text-xs text-zinc-600">complete</p>
         </div>
       </div>
-      <div className="h-2 overflow-hidden rounded-full bg-zinc-800">
+      <div className="h-2 overflow-hidden rounded-full bg-space-700">
         <div
           className="h-full rounded-full bg-gradient-to-r from-cipher-500 to-emerald-400 transition-all duration-500"
           style={{ width: `${pct}%` }}
@@ -569,7 +569,7 @@ export default function DemoPage() {
           status={s1}
           stepRef={setRef(0)}
         >
-          <div className="rounded-lg border border-zinc-800 bg-zinc-950/40 px-4 py-3">
+          <div className="rounded-lg border border-space-700/30 bg-space-950/70 px-4 py-3">
             <p className="text-sm text-zinc-400">
               Click{' '}
               <span className="font-semibold text-zinc-200">Connect Wallet</span>{' '}
@@ -842,7 +842,7 @@ export default function DemoPage() {
 
           {/* Phase progress tracker */}
           {(unshieldPending || unshieldPhase1Hash) && !unshieldResult && (
-            <div className="mb-4 rounded-lg border border-zinc-800 bg-zinc-950/50 p-3 flex flex-col gap-3">
+            <div className="mb-4 rounded-lg border border-space-700/40 bg-space-950/70 p-3 flex flex-col gap-3">
               <div className="flex items-start gap-2.5">
                 <span className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
                   unshieldPhase1Hash ? 'bg-emerald-500 text-black' : 'bg-zinc-700 text-zinc-300'
@@ -909,14 +909,14 @@ export default function DemoPage() {
         {/* ── Step 9: Developer handoff (always open) ───────────────────── */}
         <div
           ref={setRef(8)}
-          className="scroll-mt-20 rounded-xl border border-zinc-800 bg-zinc-900/40 p-4"
+          className="scroll-mt-20 rounded-xl border border-blue-900/20 bg-space-800/50 p-4 backdrop-blur-sm"
         >
           <div className="flex items-start gap-3">
-            <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-xs font-bold text-zinc-500">
+            <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-space-700 text-xs font-bold text-blue-400">
               9
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-zinc-300">Developer Kit</h3>
+              <h3 className="font-display text-sm font-semibold text-slate-200">Developer Kit</h3>
               <p className="mt-0.5 text-xs text-zinc-500">
                 The exact hook calls, ABI snippets, and addresses that powered every step above.
               </p>

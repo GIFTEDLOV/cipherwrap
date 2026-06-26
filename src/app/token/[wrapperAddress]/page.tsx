@@ -84,7 +84,7 @@ function CopyBtn({ text }: { text: string }) {
   return (
     <button
       onClick={() => { void navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 1500) }}
-      className="rounded px-1 py-0.5 text-xs text-zinc-600 transition-colors hover:bg-zinc-700 hover:text-zinc-300"
+      className="rounded px-1 py-0.5 text-xs text-slate-500 transition-colors hover:bg-space-700 hover:text-blue-300"
       title="Copy"
     >
       {copied ? '✓' : '⧉'}
@@ -95,8 +95,8 @@ function CopyBtn({ text }: { text: string }) {
 function AddrChip({ addr, label }: { addr: string; label?: string }) {
   return (
     <div className="flex items-center gap-1.5">
-      {label && <span className="w-24 shrink-0 text-xs text-zinc-600">{label}</span>}
-      <code className="font-mono text-xs text-zinc-400" title={addr}>
+      {label && <span className="w-24 shrink-0 text-xs text-slate-600">{label}</span>}
+      <code className="font-mono text-xs text-slate-400" title={addr}>
         {addr.slice(0, 6)}…{addr.slice(-4)}
       </code>
       <CopyBtn text={addr} />
@@ -104,7 +104,7 @@ function AddrChip({ addr, label }: { addr: string; label?: string }) {
         href={`https://sepolia.etherscan.io/address/${addr}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-xs text-zinc-600 hover:text-cipher-400"
+        className="text-xs text-slate-600 hover:text-cipher-400"
         title="View on Etherscan"
       >
         ↗
@@ -154,8 +154,8 @@ function Btn({
       onClick={onClick}
       disabled={disabled}
       className={variant === 'ghost'
-        ? 'rounded-lg border border-zinc-700 px-4 py-2 text-sm text-zinc-400 hover:border-zinc-500 hover:text-zinc-200 disabled:cursor-not-allowed disabled:opacity-40'
-        : 'rounded-lg border border-cipher-500 bg-cipher-500/10 px-4 py-2.5 text-sm font-semibold text-cipher-300 hover:bg-cipher-500/20 disabled:cursor-not-allowed disabled:opacity-50'
+        ? 'rounded-lg border border-space-700/60 px-4 py-2 text-sm text-slate-400 hover:border-space-600/70 hover:text-slate-200 disabled:cursor-not-allowed disabled:opacity-40'
+        : 'btn-gold rounded-lg px-4 py-2.5 text-sm disabled:cursor-not-allowed disabled:opacity-50'
       }
     >
       {children}
@@ -169,8 +169,8 @@ function Panel({
   title: string; children: React.ReactNode; muted?: boolean
 }) {
   return (
-    <div className={`rounded-xl border p-5 ${muted ? 'border-zinc-800/50 bg-zinc-900/20 opacity-60' : 'border-zinc-800 bg-zinc-900/60'}`}>
-      <p className="mb-4 text-xs font-semibold text-zinc-500">{title}</p>
+    <div className={`rounded-xl border p-5 backdrop-blur-sm ${muted ? 'border-space-700/25 bg-space-800/20 opacity-60' : 'border-blue-900/20 bg-space-800/60'}`}>
+      <p className="mb-4 text-xs font-semibold text-slate-500">{title}</p>
       {children}
     </div>
   )
@@ -181,8 +181,8 @@ function ActionError({ error, onRetry }: { error: Error; onRetry?: () => void })
   const [open, setOpen] = useState(false)
   if (isUserRejection(error)) {
     return (
-      <div className="flex items-center justify-between gap-3 rounded-lg bg-zinc-900 px-3 py-2.5">
-        <p className="text-sm text-zinc-400">Transaction cancelled — you can retry when ready.</p>
+      <div className="flex items-center justify-between gap-3 rounded-lg bg-space-800/60 px-3 py-2.5">
+        <p className="text-sm text-slate-400">Transaction cancelled — you can retry when ready.</p>
         {onRetry && (
           <button onClick={onRetry} className="shrink-0 text-xs font-medium text-cipher-400 hover:text-cipher-300">
             Retry
@@ -193,7 +193,7 @@ function ActionError({ error, onRetry }: { error: Error; onRetry?: () => void })
   }
   const { title, hint } = classifyErrorMsg(error)
   return (
-    <div className="rounded-lg border border-zinc-700/50 bg-zinc-900 p-3">
+    <div className="rounded-lg border border-space-700/40 bg-space-800/60 p-3">
       <p className="text-sm font-medium text-amber-400">{title}</p>
       {hint && <p className="mt-0.5 text-xs text-zinc-500">{hint}</p>}
       <button onClick={() => setOpen(!open)} className="mt-1.5 text-xs text-zinc-600 hover:text-zinc-400">
@@ -351,13 +351,13 @@ export default function TokenDetailPage() {
   if (!isValidAddr) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-20 text-center">
-        <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-zinc-800">
+        <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-space-700">
           <span className="text-lg">?</span>
         </div>
-        <p className="text-lg font-semibold text-zinc-200">Invalid address</p>
-        <p className="mt-2 font-mono text-sm text-zinc-600 break-all">{rawParam}</p>
-        <p className="mt-1 text-sm text-zinc-500">This is not a valid EVM address.</p>
-        <Link href="/registry" className="mt-6 inline-block rounded-lg border border-zinc-700 px-4 py-2 text-sm text-zinc-400 hover:border-zinc-500 hover:text-zinc-200">
+        <p className="font-display text-lg font-semibold text-slate-200">Invalid address</p>
+        <p className="mt-2 font-mono text-sm text-slate-600 break-all">{rawParam}</p>
+        <p className="mt-1 text-sm text-slate-500">This is not a valid EVM address.</p>
+        <Link href="/registry" className="mt-6 inline-block rounded-lg border border-space-700/60 px-4 py-2 text-sm text-slate-400 hover:border-space-600/70 hover:text-slate-200">
           ← Back to registry
         </Link>
       </div>
@@ -369,23 +369,23 @@ export default function TokenDetailPage() {
     <div className="mx-auto max-w-3xl px-4 py-10">
 
       {/* Back nav */}
-      <Link href="/registry" className="mb-6 inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-300">
+      <Link href="/registry" className="mb-6 inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-300">
         ← Registry
       </Link>
 
       {/* ── Identity + Classification ───────────────────────────────────────── */}
-      <div className="mb-6 rounded-xl border border-zinc-800 bg-zinc-900/60 p-5">
+      <div className="mb-6 rounded-xl border border-blue-900/20 bg-space-800/60 p-5 backdrop-blur-sm">
         {/* Name + symbol */}
         <div className="mb-4 flex flex-wrap items-start gap-3">
           <div className="flex-1">
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-100">{symbol}</h1>
+            <h1 className="font-display text-2xl font-bold tracking-tight text-slate-100">{symbol}</h1>
             <p className="mt-0.5 text-sm text-zinc-500">{name}</p>
           </div>
 
           {/* Validity badge */}
           <div className="mt-1 flex flex-wrap items-center gap-2">
             {registryLoading ? (
-              <span className="h-5 w-16 animate-pulse rounded bg-zinc-800" />
+              <span className="h-5 w-16 animate-pulse rounded bg-space-700" />
             ) : !inRegistry ? (
               <span className="rounded border border-amber-600/40 bg-amber-500/10 px-2 py-0.5 text-xs font-semibold text-amber-400">
                 Not in registry
@@ -397,7 +397,7 @@ export default function TokenDetailPage() {
             )}
 
             {/* Classification badges */}
-            <span className="rounded bg-zinc-800 px-2 py-0.5 text-xs text-zinc-500">ERC-7984</span>
+            <span className="rounded bg-space-700 px-2 py-0.5 text-xs text-slate-400">ERC-7984</span>
 
             {isMock && (
               <span className="rounded bg-cipher-500/15 px-2 py-0.5 text-xs font-semibold text-cipher-400">
@@ -405,7 +405,7 @@ export default function TokenDetailPage() {
               </span>
             )}
             {knownMeta?.faucet === 'restricted' && (
-              <span className="rounded bg-zinc-700/60 px-2 py-0.5 text-xs text-zinc-400">
+              <span className="rounded bg-space-700/60 px-2 py-0.5 text-xs text-slate-400">
                 Restricted mint
               </span>
             )}
@@ -435,17 +435,17 @@ export default function TokenDetailPage() {
           </p>
         )}
         {classified?.reviewFlags.includes('unknown-metadata') && (
-          <p className="mb-3 text-xs text-zinc-500">
+          <p className="mb-3 text-xs text-slate-500">
             This address appears in the live registry but is not in our verified known-wrapper list. It may be a new deployment. Verify the contract on Etherscan before using it.
           </p>
         )}
         {!inRegistry && !registryLoading && isUnknown && (
-          <p className="mb-3 rounded-lg border border-zinc-800 bg-zinc-950/50 px-3 py-2 text-xs text-zinc-500">
-            This address is not in the live registry and is not a known Zama wrapper. It may be an unverified or third-party deployment. Use with caution.
+          <p className="mb-3 rounded-lg border border-space-700/40 bg-space-950/70 px-3 py-2 text-xs text-slate-500">
+            This address is not in the live registry and is not a known Zama wrapper. It may be a new deployment. Verify the contract on Etherscan before using it.
           </p>
         )}
         {!inRegistry && !registryLoading && knownMeta && (
-          <p className="mb-3 text-xs text-zinc-500">
+          <p className="mb-3 text-xs text-slate-500">
             This wrapper is in our config but was not returned by the live registry. It may have been removed or the registry may be temporarily unavailable.
           </p>
         )}
@@ -456,20 +456,20 @@ export default function TokenDetailPage() {
         )}
 
         {/* Addresses */}
-        <div className="flex flex-col gap-2 border-t border-zinc-800 pt-4">
+        <div className="flex flex-col gap-2 border-t border-blue-900/20 pt-4">
           <AddrChip addr={wrapperAddress} label="Wrapper" />
           {hasUnderlying ? (
             <AddrChip addr={underlyingAddress} label="Underlying" />
           ) : (
             <div className="flex items-center gap-1.5">
-              <span className="w-24 shrink-0 text-xs text-zinc-600">Underlying</span>
-              <span className="text-xs text-zinc-600">{registryLoading ? 'Loading…' : 'Unknown'}</span>
+              <span className="w-24 shrink-0 text-xs text-slate-600">Underlying</span>
+              <span className="text-xs text-slate-600">{registryLoading ? 'Loading…' : 'Unknown'}</span>
             </div>
           )}
           {decimals !== undefined && (
             <div className="flex items-center gap-1.5">
-              <span className="w-24 shrink-0 text-xs text-zinc-600">Decimals</span>
-              <span className="font-mono text-xs text-zinc-500">{decimals}</span>
+              <span className="w-24 shrink-0 text-xs text-slate-600">Decimals</span>
+              <span className="font-mono text-xs text-slate-500">{decimals}</span>
             </div>
           )}
         </div>
@@ -477,11 +477,11 @@ export default function TokenDetailPage() {
 
       {/* ── Wallet / network gates ──────────────────────────────────────────── */}
       {!isConnected && (
-        <div className="mb-5 flex items-center justify-between gap-3 rounded-xl border border-zinc-800 bg-zinc-900/50 px-4 py-3">
-          <p className="text-sm text-zinc-400">
+        <div className="mb-5 flex items-center justify-between gap-3 rounded-xl border border-space-700/40 bg-space-800/40 px-4 py-3 backdrop-blur-sm">
+          <p className="text-sm text-slate-400">
             Connect your wallet to see balances and enable actions.
           </p>
-          <span className="shrink-0 text-xs text-zinc-600">↑ top right</span>
+          <span className="shrink-0 text-xs text-slate-600">↑ top right</span>
         </div>
       )}
       {isConnected && !onSepolia && (
@@ -503,37 +503,37 @@ export default function TokenDetailPage() {
 
               {/* ERC-20 */}
               <div className="flex items-center justify-between">
-                <span className="text-sm text-zinc-400">
+                <span className="text-sm text-slate-400">
                   {underlyingSymbol}
-                  <span className="ml-1.5 text-xs text-zinc-600">ERC-20</span>
+                  <span className="ml-1.5 text-xs text-slate-600">ERC-20</span>
                 </span>
                 <div className="flex items-center gap-2">
                   {underlyingBalance !== undefined ? (
-                    <span className="font-mono text-sm font-semibold text-zinc-200">
+                    <span className="font-mono text-sm font-semibold text-slate-200">
                       {formatUnits(underlyingBalance as bigint, decimals)}{' '}
-                      <span className="text-xs font-normal text-zinc-500">{underlyingSymbol}</span>
+                      <span className="text-xs font-normal text-slate-500">{underlyingSymbol}</span>
                     </span>
                   ) : (
-                    <span className="text-sm text-zinc-600">—</span>
+                    <span className="text-sm text-slate-600">—</span>
                   )}
-                  <button onClick={() => void refetchBalance()} className="text-xs text-zinc-600 hover:text-zinc-400" title="Refresh">↺</button>
+                  <button onClick={() => void refetchBalance()} className="text-xs text-slate-600 hover:text-slate-400" title="Refresh">↺</button>
                 </div>
               </div>
 
-              <div className="border-t border-zinc-800/60" />
+              <div className="border-t border-blue-900/20" />
 
               {/* Confidential */}
               <div>
                 <div className="mb-2 flex items-center justify-between">
-                  <span className="text-sm text-zinc-400">
+                  <span className="text-sm text-slate-400">
                     {symbol}
-                    <span className="ml-1.5 text-xs text-zinc-600">Confidential</span>
+                    <span className="ml-1.5 text-xs text-slate-600">Confidential</span>
                   </span>
                   {hasPermit && (
                     <button
                       onClick={() => revokePermit([wrapperAddress])}
                       disabled={revokingPermit}
-                      className="text-xs text-zinc-600 underline underline-offset-2 hover:text-zinc-400 disabled:opacity-50"
+                      className="text-xs text-slate-600 underline underline-offset-2 hover:text-slate-400 disabled:opacity-50"
                     >
                       {revokingPermit ? 'Revoking…' : 'Revoke permit'}
                     </button>
@@ -544,7 +544,7 @@ export default function TokenDetailPage() {
                   <Spinner label="Checking permit…" />
                 ) : !hasPermit ? (
                   <div className="flex flex-col gap-2">
-                    <p className="text-xs text-zinc-500">
+                    <p className="text-xs text-slate-500">
                       Grant a free EIP-712 permit (no gas) to decrypt your balance.
                     </p>
                     {grantError && (
@@ -564,7 +564,7 @@ export default function TokenDetailPage() {
                       {formatUnits(confBalance as bigint, decimals)}{' '}
                       <span className="text-sm font-normal text-emerald-600">{symbol}</span>
                     </p>
-                    <p className="mt-1 text-xs text-zinc-600">
+                    <p className="mt-1 text-xs text-slate-600">
                       Raw bigint: {(confBalance as bigint).toString()}
                     </p>
                   </div>
@@ -586,20 +586,20 @@ export default function TokenDetailPage() {
           {isMock && (
             <Panel title="Faucet">
               <div className="flex flex-col gap-3">
-                <p className="text-sm text-zinc-400">
-                  Mints test <span className="text-zinc-200">{underlyingSymbol}</span> directly to your address.
+                <p className="text-sm text-slate-400">
+                  Mints test <span className="text-slate-200">{underlyingSymbol}</span> directly to your address.
                   Capped at 999,999 per call.
                 </p>
                 <div className="flex items-center gap-2">
-                  <label className="w-24 shrink-0 text-xs text-zinc-500">Amount</label>
+                  <label className="w-24 shrink-0 text-xs text-slate-500">Amount</label>
                   <input
                     type="number" min="1" max="999999"
                     value={mintAmountStr}
                     onChange={(e) => setMintAmountStr(e.target.value)}
                     disabled={mintBusy || mintDone}
-                    className="w-36 rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-1.5 text-sm text-zinc-200 focus:border-cipher-500 focus:outline-none disabled:opacity-50"
+                    className="w-36 rounded-lg border border-space-700 bg-space-950 px-3 py-1.5 text-sm text-slate-200 focus:border-blue-500/50 focus:outline-none disabled:opacity-50"
                   />
-                  <span className="text-xs text-zinc-500">{underlyingSymbol}</span>
+                  <span className="text-xs text-slate-500">{underlyingSymbol}</span>
                 </div>
                 {mintError && (
                   <ActionError
@@ -618,7 +618,7 @@ export default function TokenDetailPage() {
                       {mintSigning ? '⏳ Signing…' : mintConfirming ? '⛏ Mining…' : `Mint ${mintAmountStr} ${underlyingSymbol}`}
                     </Btn>
                   ) : (
-                    <button onClick={() => { resetMint(); void refetchBalance() }} className="text-xs text-zinc-600 underline underline-offset-2 hover:text-zinc-400">
+                    <button onClick={() => { resetMint(); void refetchBalance() }} className="text-xs text-slate-600 underline underline-offset-2 hover:text-slate-400">
                       Mint again
                     </button>
                   )}
@@ -630,7 +630,7 @@ export default function TokenDetailPage() {
           {/* ── Revoked notice ────────────────────────────────────────────── */}
           {!isValid && inRegistry && (
             <Panel title="Wrap / Unwrap" muted>
-              <p className="text-sm text-zinc-500">Disabled — this pair is revoked in the registry.</p>
+              <p className="text-sm text-slate-500">Disabled — this pair is revoked in the registry.</p>
             </Panel>
           )}
 
@@ -638,23 +638,23 @@ export default function TokenDetailPage() {
           {isValid && (
             <Panel title="Wrap">
               <div className="flex flex-col gap-3">
-                <p className="text-sm text-zinc-400">
-                  Approve the wrapper to pull <span className="text-zinc-200">{underlyingSymbol}</span>, then encrypt and wrap into a confidential balance.
+                <p className="text-sm text-slate-400">
+                  Approve the wrapper to pull <span className="text-slate-200">{underlyingSymbol}</span>, then encrypt and wrap into a confidential balance.
                 </p>
                 <div className="flex items-center gap-2">
-                  <label className="w-24 shrink-0 text-xs text-zinc-500">Amount</label>
+                  <label className="w-24 shrink-0 text-xs text-slate-500">Amount</label>
                   <input
                     type="number" min="1" value={wrapAmountStr}
                     onChange={(e) => setWrapAmountStr(e.target.value)}
                     disabled={shieldPending}
-                    className="w-36 rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-1.5 text-sm text-zinc-200 focus:border-cipher-500 focus:outline-none disabled:opacity-50"
+                    className="w-36 rounded-lg border border-space-700 bg-space-950 px-3 py-1.5 text-sm text-slate-200 focus:border-blue-500/50 focus:outline-none disabled:opacity-50"
                   />
-                  <span className="text-xs text-zinc-500">{underlyingSymbol}</span>
+                  <span className="text-xs text-slate-500">{underlyingSymbol}</span>
                 </div>
 
                 {/* Step 1: Approve */}
-                <div className="flex flex-col gap-2 rounded-lg border border-zinc-800 bg-zinc-950/50 p-3">
-                  <p className="text-xs font-semibold text-zinc-500">Step 1 — Approve</p>
+                <div className="flex flex-col gap-2 rounded-lg border border-space-700/40 bg-space-950/70 p-3">
+                  <p className="text-xs font-semibold text-slate-500">Step 1 — Approve</p>
                   {approveError && (
                     <ActionError error={approveError} onRetry={() => { resetApprove(); handleApprove() }} />
                   )}
@@ -666,8 +666,8 @@ export default function TokenDetailPage() {
                 </div>
 
                 {/* Step 2: Shield */}
-                <div className="flex flex-col gap-2 rounded-lg border border-zinc-800 bg-zinc-950/50 p-3">
-                  <p className="text-xs font-semibold text-zinc-500">Step 2 — Shield (wrap)</p>
+                <div className="flex flex-col gap-2 rounded-lg border border-space-700/40 bg-space-950/70 p-3">
+                  <p className="text-xs font-semibold text-slate-500">Step 2 — Shield (wrap)</p>
                   {shieldError && (
                     <ActionError error={shieldError} onRetry={() => { resetShield(); setShieldSubmittedHash(null); handleShield() }} />
                   )}
@@ -683,7 +683,7 @@ export default function TokenDetailPage() {
                         : `Wrap ${wrapAmountStr} ${underlyingSymbol} → ${symbol}`}
                     </Btn>
                     {shieldResult && (
-                      <button onClick={() => { resetShield(); setShieldSubmittedHash(null) }} className="text-xs text-zinc-600 underline underline-offset-2 hover:text-zinc-400">
+                      <button onClick={() => { resetShield(); setShieldSubmittedHash(null) }} className="text-xs text-slate-600 underline underline-offset-2 hover:text-slate-400">
                         Wrap again
                       </button>
                     )}
@@ -697,23 +697,23 @@ export default function TokenDetailPage() {
           {isValid && (
             <Panel title="Unwrap">
               <div className="flex flex-col gap-4">
-                <p className="text-sm text-zinc-400">
-                  Two on-chain phases: <span className="text-zinc-300">Phase 1</span> encrypts and submits{' '}
-                  <code className="rounded bg-zinc-800 px-1 text-xs">unwrap()</code>.{' '}
-                  <span className="text-zinc-300">Phase 2</span> awaits the Zama FHE network proof, then submits{' '}
-                  <code className="rounded bg-zinc-800 px-1 text-xs">finalizeUnwrap()</code>{' '}
+                <p className="text-sm text-slate-400">
+                  Two on-chain phases: <span className="text-slate-300">Phase 1</span> encrypts and submits{' '}
+                  <code className="rounded bg-space-700 px-1 text-xs">unwrap()</code>.{' '}
+                  <span className="text-slate-300">Phase 2</span> awaits the Zama FHE network proof, then submits{' '}
+                  <code className="rounded bg-space-700 px-1 text-xs">finalizeUnwrap()</code>{' '}
                   automatically. You sign once; the SDK handles phase 2.
                 </p>
 
                 <div className="flex items-center gap-2">
-                  <label className="w-24 shrink-0 text-xs text-zinc-500">Amount</label>
+                  <label className="w-24 shrink-0 text-xs text-slate-500">Amount</label>
                   <input
                     type="number" min="1" value={unwrapAmountStr}
                     onChange={(e) => setUnwrapAmountStr(e.target.value)}
                     disabled={unshieldPending}
-                    className="w-36 rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-1.5 text-sm text-zinc-200 focus:border-cipher-500 focus:outline-none disabled:opacity-50"
+                    className="w-36 rounded-lg border border-space-700 bg-space-950 px-3 py-1.5 text-sm text-slate-200 focus:border-blue-500/50 focus:outline-none disabled:opacity-50"
                   />
-                  <span className="text-xs text-zinc-500">{symbol}</span>
+                  <span className="text-xs text-slate-500">{symbol}</span>
                 </div>
 
                 {unshieldError && (
@@ -725,19 +725,19 @@ export default function TokenDetailPage() {
 
                 {/* Phase progress tracker */}
                 {(unshieldPending || unshieldPhase1Hash) && !unshieldResult && (
-                  <div className="flex flex-col gap-2.5 rounded-lg border border-zinc-800 bg-zinc-950/50 p-3">
+                  <div className="flex flex-col gap-2.5 rounded-lg border border-space-700/40 bg-space-950/70 p-3">
                     <div className="flex items-start gap-2.5">
-                      <span className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-bold ${unshieldPhase1Hash ? 'bg-emerald-500 text-black' : 'bg-zinc-700 text-zinc-300'}`}>1</span>
+                      <span className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-bold ${unshieldPhase1Hash ? 'bg-emerald-500 text-black' : 'bg-space-700 text-slate-300'}`}>1</span>
                       <div className="flex-1">
-                        <p className="text-xs font-semibold text-zinc-400">Unwrap submitted</p>
+                        <p className="text-xs font-semibold text-slate-400">Unwrap submitted</p>
                         {!unshieldPhase1Hash && <Spinner label="FHE-encrypting + awaiting signature…" />}
                         {unshieldPhase1Hash && <TxLink hash={unshieldPhase1Hash} />}
                       </div>
                     </div>
                     <div className="flex items-start gap-2.5">
-                      <span className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-bold ${unshieldPhase2Hash ? 'bg-emerald-500 text-black' : unshieldFinalizing ? 'bg-amber-500 text-black' : 'bg-zinc-700 text-zinc-300'}`}>2</span>
+                      <span className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-bold ${unshieldPhase2Hash ? 'bg-emerald-500 text-black' : unshieldFinalizing ? 'bg-amber-500 text-black' : 'bg-space-700 text-slate-300'}`}>2</span>
                       <div className="flex-1">
-                        <p className="text-xs font-semibold text-zinc-400">Finalize unwrap</p>
+                        <p className="text-xs font-semibold text-slate-400">Finalize unwrap</p>
                         {unshieldPhase1Hash && !unshieldFinalizing && !unshieldPhase2Hash && (
                           <Spinner label="Waiting for Zama FHE network decryption proof…" />
                         )}
@@ -762,7 +762,7 @@ export default function TokenDetailPage() {
                   ) : (
                     <button
                       onClick={() => { resetUnshield(); setUnshieldPhase1Hash(null); setUnshieldFinalizing(false); setUnshieldPhase2Hash(null); void refetchBalance() }}
-                      className="text-xs text-zinc-600 underline underline-offset-2 hover:text-zinc-400"
+                      className="text-xs text-slate-600 underline underline-offset-2 hover:text-slate-400"
                     >
                       Unwrap again
                     </button>
@@ -771,19 +771,19 @@ export default function TokenDetailPage() {
 
                 {/* Resume interrupted unwrap */}
                 <details className="mt-1">
-                  <summary className="cursor-pointer text-xs text-zinc-600 hover:text-zinc-400">
+                  <summary className="cursor-pointer text-xs text-slate-600 hover:text-slate-400">
                     Resume interrupted unwrap
                   </summary>
-                  <div className="mt-3 flex flex-col gap-2 rounded-lg border border-zinc-800 bg-zinc-950/50 p-3">
-                    <p className="text-xs text-zinc-500">
-                      If you submitted an <code className="rounded bg-zinc-800 px-1">unwrap</code> in a previous session but finalization never completed, paste the phase-1 tx hash to resume from phase 2.
+                  <div className="mt-3 flex flex-col gap-2 rounded-lg border border-space-700/40 bg-space-950/70 p-3">
+                    <p className="text-xs text-slate-500">
+                      If you submitted an <code className="rounded bg-space-700 px-1">unwrap</code> in a previous session but finalization never completed, paste the phase-1 tx hash to resume from phase 2.
                     </p>
                     <input
                       type="text" placeholder="0x… (unwrap tx hash)"
                       value={resumeHashInput}
                       onChange={(e) => setResumeHashInput(e.target.value)}
                       disabled={resumePending}
-                      className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-1.5 font-mono text-xs text-zinc-200 focus:border-cipher-500 focus:outline-none disabled:opacity-50"
+                      className="w-full rounded-lg border border-space-700 bg-space-950 px-3 py-1.5 font-mono text-xs text-slate-200 focus:border-blue-500/50 focus:outline-none disabled:opacity-50"
                     />
                     {resumeError && <ActionError error={resumeError} />}
                     {resumeResult && !resumePending && <TxSuccess label="Resume complete" hash={resumeResult.txHash} />}
@@ -798,8 +798,28 @@ export default function TokenDetailPage() {
         </div>
       )}
 
+      {/* ── Session activity — derived from tracked state, clears on refresh ──── */}
+      {(() => {
+        const items: Array<{ label: string; hash: Hex }> = []
+        if (mintDone && mintTxHash)
+          items.push({ label: `Minted ${mintAmountStr} ${underlyingSymbol}`, hash: mintTxHash })
+        if (approveResult)
+          items.push({ label: `Approved ${wrapAmountStr} ${underlyingSymbol}`, hash: approveResult.txHash })
+        if (shieldResult)
+          items.push({ label: `Wrapped ${wrapAmountStr} ${underlyingSymbol} → ${symbol}`, hash: shieldResult.txHash })
+        if (unshieldResult)
+          items.push({ label: `Unwrapped ${unwrapAmountStr} ${symbol}`, hash: unshieldResult.txHash })
+        if (resumeResult)
+          items.push({ label: 'Finalize unwrap resumed', hash: resumeResult.txHash })
+        return items.length > 0 ? (
+          <div className="mt-4">
+            <SessionActivity items={items} />
+          </div>
+        ) : null
+      })()}
+
       {/* ── Developer snippets — always visible ──────────────────────────────── */}
-      <div className="mt-6">
+      <div className="mt-4">
         <TokenDevSection
           wrapperAddress={wrapperAddress}
           underlyingAddress={underlyingAddress}
@@ -812,6 +832,38 @@ export default function TokenDetailPage() {
         />
       </div>
 
+    </div>
+  )
+}
+
+// ── Session activity (derived from existing state, no new state) ──────────────
+
+function SessionActivity({ items }: { items: Array<{ label: string; hash: Hex }> }) {
+  if (items.length === 0) return null
+  return (
+    <div className="rounded-xl border border-blue-900/20 bg-space-800/50 p-4 backdrop-blur-sm">
+      <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-slate-500">
+        Session activity
+      </p>
+      <div className="flex flex-col gap-2.5">
+        {items.map(({ label, hash }) => (
+          <div key={hash} className="flex items-center gap-3">
+            <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-[10px] font-bold text-emerald-400">
+              ✓
+            </span>
+            <span className="flex-1 text-sm text-slate-300">{label}</span>
+            <a
+              href={`https://sepolia.etherscan.io/tx/${hash}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0 font-mono text-xs text-cipher-400 hover:text-cipher-300"
+              title={hash}
+            >
+              {hash.slice(0, 10)}…↗
+            </a>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
@@ -834,18 +886,18 @@ function TokenDevSection({
   })() : null
 
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-900/40">
+    <div className="rounded-xl border border-blue-900/20 bg-space-800/50 backdrop-blur-sm">
       <button onClick={() => setOpen(!open)} className="flex w-full items-center justify-between px-5 py-4">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-zinc-500">Developer</span>
-          <span className="rounded bg-zinc-800 px-1.5 py-0.5 font-mono text-xs text-zinc-600">{symbol}</span>
+          <span className="text-xs font-semibold text-slate-500">Developer</span>
+          <span className="rounded bg-space-700 px-1.5 py-0.5 font-mono text-xs text-slate-500">{symbol}</span>
         </div>
-        <span className="text-xs text-zinc-600">{open ? 'Collapse ▲' : 'Expand snippets ▼'}</span>
+        <span className="text-xs text-slate-600">{open ? 'Collapse ▲' : 'Expand snippets ▼'}</span>
       </button>
 
       {open && (
-        <div className="flex flex-col gap-5 border-t border-zinc-800 px-5 pb-5 pt-4">
-          <p className="text-sm text-zinc-500">
+        <div className="flex flex-col gap-5 border-t border-blue-900/20 px-5 pb-5 pt-4">
+          <p className="text-sm text-slate-500">
             Generated from live registry data — addresses are real Sepolia values.{' '}
             <Link href="/developers" className="text-cipher-400 underline underline-offset-2 hover:text-cipher-300">
               Full Developer Kit →
@@ -863,7 +915,7 @@ function TokenDevSection({
                 { title: 'Unwrap (two-phase)', code: snippets.unwrap, label: 'TypeScript · @zama-fhe/react-sdk' },
               ].map((s) => (
                 <div key={s.title}>
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-zinc-600">{s.title}</p>
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-slate-600">{s.title}</p>
                   <CodeBlock code={s.code} label={s.label} />
                 </div>
               ))}
