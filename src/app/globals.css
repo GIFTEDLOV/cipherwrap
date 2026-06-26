@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-cipher: #14b8a6;
+}
+
+/* Signature element: teal glow on primary buttons */
+.btn-cipher {
+  box-shadow: 0 0 18px rgba(20, 184, 166, 0.18);
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+.btn-cipher:hover:not(:disabled) {
+  box-shadow: 0 0 28px rgba(20, 184, 166, 0.32);
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .btn-cipher {
+    transition: none;
+  }
+}
