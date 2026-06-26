@@ -29,7 +29,7 @@ function etherscanHref(addr: string) {
   return `https://sepolia.etherscan.io/address/${addr}`
 }
 
-// ── CopyButton — stops propagation so clicks inside a <Link> card work ───────
+// ── CopyButton ────────────────────────────────────────────────────────────────
 
 function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false)
@@ -42,7 +42,7 @@ function CopyButton({ text }: { text: string }) {
         setCopied(true)
         setTimeout(() => setCopied(false), 1500)
       }}
-      className="rounded px-1 py-0.5 text-xs text-zinc-600 transition-colors hover:bg-zinc-700 hover:text-zinc-300"
+      className="rounded px-1 py-0.5 text-xs text-slate-500 transition-colors hover:bg-space-700 hover:text-blue-300"
       title="Copy to clipboard"
     >
       {copied ? '✓' : '⧉'}
@@ -50,22 +50,16 @@ function CopyButton({ text }: { text: string }) {
   )
 }
 
-function AddressRow({
-  label,
-  addr,
-}: {
-  label: string
-  addr: string
-}) {
+function AddressRow({ label, addr }: { label: string; addr: string }) {
   return (
     <div className="flex items-center gap-2">
-      <span className="w-20 shrink-0 text-xs text-zinc-600">{label}</span>
+      <span className="w-20 shrink-0 text-xs text-slate-500">{label}</span>
       <a
         href={etherscanHref(addr)}
         target="_blank"
         rel="noopener noreferrer"
         onClick={(e) => e.stopPropagation()}
-        className="font-mono text-xs text-zinc-500 hover:text-cipher-400"
+        className="font-mono text-xs text-slate-400 hover:text-cipher-400"
         title={addr}
       >
         {shorten(addr)}
@@ -105,7 +99,7 @@ function FaucetBadge({
   if (faucet === 'restricted')
     return (
       <span
-        className="rounded bg-zinc-800 px-2 py-0.5 text-xs text-zinc-500"
+        className="rounded bg-space-700 px-2 py-0.5 text-xs text-slate-400"
         title={blockReason ?? undefined}
       >
         Restricted
@@ -139,27 +133,26 @@ function UnknownBadge() {
 // ── pair card ─────────────────────────────────────────────────────────────────
 
 function PairCard({ pair }: { pair: ClassifiedPair }) {
-  const cardBg =
+  const cardCls =
     pair.status === 'revoked'
-      ? 'border-red-900/40 bg-red-950/10 hover:border-red-800/60'
-      : 'border-zinc-800 bg-zinc-900/60 hover:border-zinc-600 hover:bg-zinc-900/80'
+      ? 'border-red-900/40 bg-red-950/10 hover:border-red-800/50'
+      : 'border-blue-900/20 bg-space-800/60 hover:border-blue-700/30 hover:bg-space-800/80'
 
   return (
     <Link
       href={`/token/${pair.wrapperAddress}`}
-      className={`group block rounded-xl border p-4 transition-all duration-150 ${cardBg}`}
+      className={`group block rounded-xl border p-4 backdrop-blur-sm transition-all duration-150 ${cardCls}`}
     >
-      {/* Header row: symbol + name + badges + arrow */}
       <div className="mb-3 flex flex-wrap items-start justify-between gap-2">
         <div className="min-w-0">
           {pair.metadata === null ? (
-            <p className="font-semibold text-zinc-400">Unknown token</p>
+            <p className="font-semibold text-slate-400">Unknown token</p>
           ) : (
             <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-              <span className="font-semibold tracking-tight text-zinc-100">
+              <span className="font-semibold tracking-tight text-slate-100">
                 {pair.displaySymbol}
               </span>
-              <span className="text-sm text-zinc-500">{pair.displayName}</span>
+              <span className="text-sm text-slate-500">{pair.displayName}</span>
             </div>
           )}
           {pair.metadata?.note && (
@@ -167,7 +160,6 @@ function PairCard({ pair }: { pair: ClassifiedPair }) {
           )}
         </div>
 
-        {/* Badge cluster + arrow */}
         <div className="flex shrink-0 flex-wrap items-center gap-1.5">
           <StatusBadge status={pair.status} />
           <FaucetBadge
@@ -176,19 +168,17 @@ function PairCard({ pair }: { pair: ClassifiedPair }) {
           />
           {pair.isDuplicate && <DuplicateBadge />}
           {pair.metadata === null && <UnknownBadge />}
-          <span className="ml-1 text-zinc-600 transition-colors group-hover:text-zinc-400">
+          <span className="ml-1 text-slate-600 transition-colors group-hover:text-blue-400">
             →
           </span>
         </div>
       </div>
 
-      {/* Address rows */}
       <div className="flex flex-col gap-1.5 sm:flex-row sm:gap-6">
         <AddressRow label="Wrapper" addr={pair.wrapperAddress} />
         <AddressRow label="Underlying" addr={pair.underlyingAddress} />
       </div>
 
-      {/* Disabled-action hints for revoked pairs */}
       {pair.status === 'revoked' && (
         <p className="mt-2 text-xs text-red-600">
           Wrap and unwrap disabled — {pair.actions.wrapBlockReason?.toLowerCase()}
@@ -202,20 +192,20 @@ function PairCard({ pair }: { pair: ClassifiedPair }) {
 
 function SkeletonCard() {
   return (
-    <div className="animate-pulse rounded-xl border border-zinc-800 bg-zinc-900/60 p-4">
+    <div className="animate-pulse rounded-xl border border-blue-900/20 bg-space-800/50 p-4">
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="h-5 w-28 rounded bg-zinc-800" />
-          <div className="h-4 w-44 rounded bg-zinc-800/60" />
+          <div className="h-5 w-28 rounded bg-space-700" />
+          <div className="h-4 w-44 rounded bg-space-700/60" />
         </div>
         <div className="flex gap-1.5">
-          <div className="h-5 w-12 rounded bg-zinc-800" />
-          <div className="h-5 w-14 rounded bg-zinc-800" />
+          <div className="h-5 w-12 rounded bg-space-700" />
+          <div className="h-5 w-14 rounded bg-space-700" />
         </div>
       </div>
       <div className="flex gap-6">
-        <div className="h-4 w-40 rounded bg-zinc-800" />
-        <div className="h-4 w-40 rounded bg-zinc-800" />
+        <div className="h-4 w-40 rounded bg-space-700" />
+        <div className="h-4 w-40 rounded bg-space-700" />
       </div>
     </div>
   )
@@ -240,13 +230,13 @@ function FilterPill({
       className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm transition-colors ${
         active
           ? 'border-cipher-600/50 bg-cipher-500/10 font-medium text-cipher-300'
-          : 'border-zinc-800 text-zinc-500 hover:border-zinc-600 hover:text-zinc-300'
+          : 'border-space-700/50 text-slate-500 hover:border-space-600/60 hover:text-slate-300'
       }`}
     >
       {children}
       <span
         className={`rounded px-1 py-0.5 text-xs ${
-          active ? 'bg-cipher-500/20 text-cipher-400' : 'bg-zinc-800 text-zinc-600'
+          active ? 'bg-cipher-500/20 text-cipher-400' : 'bg-space-700 text-slate-500'
         }`}
       >
         {count}
@@ -265,7 +255,6 @@ export default function RegistryPage() {
   const chainId = useChainId()
   const onSepolia = chainId === SEPOLIA_CHAIN_ID
 
-  // Registry read — retry + failure-count aware for quiet retry UI
   const {
     data: pairsResult,
     isLoading,
@@ -285,11 +274,9 @@ export default function RegistryPage() {
     },
   })
 
-  // Classify all pairs through the intelligence layer
   const rawPairs = (pairsResult as RawRegistryPair[] | undefined) ?? []
   const classified = classifyPairs(rawPairs)
 
-  // Stats across the full unfiltered set
   const stats = {
     total: classified.length,
     valid: classified.filter((p) => p.isValid).length,
@@ -298,7 +285,6 @@ export default function RegistryPage() {
     review: classified.filter((p) => p.needsReview).length,
   }
 
-  // Filter + search
   const visible = classified
     .filter((p) => {
       if (activeFilter === 'valid') return p.isValid
@@ -308,7 +294,6 @@ export default function RegistryPage() {
     })
     .filter((p) => pairMatchesSearch(p, search))
 
-  // Count per filter (before search, for pill numbers)
   const filterCounts: Record<FilterKey, number> = {
     all: classified.length,
     valid: classified.filter((p) => p.isValid).length,
@@ -320,9 +305,7 @@ export default function RegistryPage() {
     ? new Date(dataUpdatedAt).toLocaleTimeString()
     : null
 
-  // Retry state: at least one attempt failed but we're still trying
   const isRetrying = failureCount > 0 && isFetching && !isError
-  // Error state: retries exhausted
   const isFailed = isError && !isFetching
 
   return (
@@ -331,30 +314,29 @@ export default function RegistryPage() {
       {/* ── Page header ────────────────────────────────────────────────────── */}
       <div className="mb-8">
         <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-100">
+          <h1 className="font-display text-2xl font-bold tracking-tight text-slate-100">
             Wrapper Registry
           </h1>
-          {/* Live indicator */}
           {isFetching && !isRetrying && !isError && (
-            <span className="flex items-center gap-1.5 text-xs text-zinc-500">
+            <span className="flex items-center gap-1.5 text-xs text-slate-500">
               <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
               Live
             </span>
           )}
         </div>
-        <p className="mt-1 text-sm text-zinc-500">
+        <p className="mt-1 text-sm text-slate-500">
           Live read from{' '}
           <a
             href={etherscanHref(WRAPPERS_REGISTRY)}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-mono text-zinc-400 hover:text-cipher-400"
+            className="font-mono text-slate-400 hover:text-cipher-400"
             title={WRAPPERS_REGISTRY}
           >
             {shorten(WRAPPERS_REGISTRY)}
           </a>
           {' '}via{' '}
-          <code className="rounded bg-zinc-800 px-1 text-xs text-zinc-400">
+          <code className="rounded bg-space-700 px-1 text-xs text-slate-300">
             getTokenConfidentialTokenPairs()
           </code>
           {' · '}Sepolia
@@ -363,7 +345,7 @@ export default function RegistryPage() {
 
       {/* ── Network / connection banners ────────────────────────────────────── */}
       {!isConnected && (
-        <div className="mb-5 rounded-lg border border-zinc-800 bg-zinc-900/40 px-4 py-2.5 text-sm text-zinc-500">
+        <div className="mb-5 rounded-lg border border-space-700/40 bg-space-800/40 px-4 py-2.5 text-sm text-slate-500">
           Connect your wallet to enable wrap, unwrap, and faucet on the detail
           page. Registry data is public and visible regardless.
         </div>
@@ -377,9 +359,8 @@ export default function RegistryPage() {
 
       {/* ── Search + filter bar ─────────────────────────────────────────────── */}
       <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center">
-        {/* Search */}
         <div className="relative flex-1">
-          <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-zinc-600">
+          <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-slate-600">
             <svg
               className="h-4 w-4"
               viewBox="0 0 20 20"
@@ -398,11 +379,10 @@ export default function RegistryPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by symbol, name, or address…"
-            className="w-full rounded-xl border border-zinc-700 bg-zinc-900 py-2.5 pl-9 pr-4 text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-cipher-500 focus:outline-none focus:ring-1 focus:ring-cipher-500/20"
+            className="w-full rounded-xl border border-space-700 bg-space-800/70 py-2.5 pl-9 pr-4 text-sm text-slate-200 placeholder:text-slate-600 focus:border-blue-500/50 focus:outline-none focus:ring-1 focus:ring-blue-500/20"
           />
         </div>
 
-        {/* Filter pills */}
         <div className="flex flex-wrap gap-2">
           {(
             [
@@ -426,9 +406,9 @@ export default function RegistryPage() {
 
       {/* ── Stats bar ───────────────────────────────────────────────────────── */}
       {!isLoading && stats.total > 0 && (
-        <div className="mb-5 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-zinc-600">
+        <div className="mb-5 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-600">
           <span>
-            <span className="font-medium text-zinc-300">{stats.total}</span> pairs
+            <span className="font-medium text-slate-300">{stats.total}</span> pairs
           </span>
           <span>
             <span className="font-medium text-emerald-400">{stats.valid}</span> valid
@@ -447,7 +427,7 @@ export default function RegistryPage() {
             </span>
           )}
           {updatedAt && !isRetrying && (
-            <span className="text-zinc-700">Updated {updatedAt}</span>
+            <span className="text-slate-700">Updated {updatedAt}</span>
           )}
           {isRetrying && (
             <span className="flex items-center gap-1.5 text-amber-600">
@@ -458,7 +438,7 @@ export default function RegistryPage() {
           <button
             onClick={() => refetch()}
             disabled={isFetching}
-            className="ml-auto rounded border border-zinc-800 px-2.5 py-1 text-zinc-500 transition-colors hover:border-zinc-600 hover:text-zinc-300 disabled:opacity-40"
+            className="ml-auto rounded border border-space-700/50 px-2.5 py-1 text-slate-500 transition-colors hover:border-space-600/60 hover:text-slate-300 disabled:opacity-40"
           >
             ↺ Refresh
           </button>
@@ -474,37 +454,37 @@ export default function RegistryPage() {
         </div>
       )}
 
-      {/* ── Failed after retries — quiet inline error, not a full red panel ─── */}
+      {/* ── Failed after retries ─────────────────────────────────────────────── */}
       {isFailed && !isLoading && (
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
-          <p className="font-medium text-zinc-300">
+        <div className="rounded-xl border border-space-700/40 bg-space-800/50 p-6 backdrop-blur-sm">
+          <p className="font-medium text-slate-300">
             Could not reach the registry
           </p>
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm text-slate-500">
             {(error as Error | null)?.message ?? 'RPC request failed after 3 retries.'}
           </p>
-          <p className="mt-1 text-xs text-zinc-600">
+          <p className="mt-1 text-xs text-slate-600">
             The fallback transport tried multiple Sepolia RPC endpoints. Check
             your connection or set{' '}
-            <code className="rounded bg-zinc-800 px-1">
+            <code className="rounded bg-space-700 px-1">
               NEXT_PUBLIC_SEPOLIA_RPC_URL
             </code>{' '}
             to a private endpoint.
           </p>
           <button
             onClick={() => refetch()}
-            className="mt-4 rounded-lg border border-zinc-700 px-4 py-2 text-sm text-zinc-400 hover:border-zinc-500 hover:text-zinc-200"
+            className="mt-4 rounded-lg border border-space-600/50 px-4 py-2 text-sm text-slate-400 hover:border-blue-700/50 hover:text-slate-200"
           >
             Retry
           </button>
         </div>
       )}
 
-      {/* ── Empty state — no pairs from registry ─────────────────────────────── */}
+      {/* ── Empty state ──────────────────────────────────────────────────────── */}
       {!isLoading && !isError && stats.total === 0 && (
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-10 text-center">
-          <p className="text-zinc-400">No pairs returned by the registry.</p>
-          <p className="mt-1 text-sm text-zinc-600">
+        <div className="rounded-xl border border-space-700/40 bg-space-800/50 p-10 text-center backdrop-blur-sm">
+          <p className="text-slate-400">No pairs returned by the registry.</p>
+          <p className="mt-1 text-sm text-slate-600">
             The registry contract returned an empty list. This is unexpected on
             Sepolia — check the contract address or network.
           </p>
@@ -513,8 +493,8 @@ export default function RegistryPage() {
 
       {/* ── Search empty state ───────────────────────────────────────────────── */}
       {!isLoading && !isError && stats.total > 0 && visible.length === 0 && (
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-8 text-center">
-          <p className="text-zinc-400">No results for "{search}"</p>
+        <div className="rounded-xl border border-space-700/40 bg-space-800/50 p-8 text-center backdrop-blur-sm">
+          <p className="text-slate-400">No results for &ldquo;{search}&rdquo;</p>
           <button
             onClick={() => {
               setSearch('')
@@ -534,14 +514,13 @@ export default function RegistryPage() {
             <PairCard key={pair.wrapperAddress} pair={pair} />
           ))}
 
-          {/* Footer note about registry completeness */}
-          <p className="mt-2 text-center text-xs text-zinc-700">
+          <p className="mt-2 text-center text-xs text-slate-700">
             Showing {visible.length} of {stats.total} registry entries ·{' '}
             <a
               href={etherscanHref(WRAPPERS_REGISTRY)}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-zinc-500"
+              className="hover:text-slate-500"
             >
               View registry contract ↗
             </a>

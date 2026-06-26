@@ -41,7 +41,7 @@ function CopyInline({ text }: { text: string }) {
         setCopied(true)
         setTimeout(() => setCopied(false), 1800)
       }}
-      className="rounded bg-zinc-700 px-1.5 py-0.5 text-xs text-zinc-300 hover:bg-zinc-600"
+      className="rounded bg-space-700 px-1.5 py-0.5 text-xs text-slate-300 hover:bg-space-600"
     >
       {copied ? 'Copied!' : 'Copy'}
     </button>
@@ -50,9 +50,9 @@ function CopyInline({ text }: { text: string }) {
 
 function AddressRow({ label, address }: { label: string; address: string }) {
   return (
-    <div className="flex flex-wrap items-center gap-3 rounded-lg border border-zinc-800 bg-zinc-900/50 px-4 py-3">
-      <span className="w-32 shrink-0 text-xs text-zinc-500">{label}</span>
-      <code className="flex-1 break-all font-mono text-xs text-zinc-300">
+    <div className="flex flex-wrap items-center gap-3 rounded-lg border border-blue-900/20 bg-space-800/50 px-4 py-3 backdrop-blur-sm">
+      <span className="w-32 shrink-0 text-xs text-slate-500">{label}</span>
+      <code className="flex-1 break-all font-mono text-xs text-slate-300">
         {address}
       </code>
       <div className="flex items-center gap-2">
@@ -61,7 +61,7 @@ function AddressRow({ label, address }: { label: string; address: string }) {
           href={`https://sepolia.etherscan.io/address/${address}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs text-cipher-500 underline hover:text-cipher-300"
+          className="text-xs text-cipher-400 underline hover:text-cipher-300"
         >
           Etherscan ↗
         </a>
@@ -84,8 +84,8 @@ function Section({
   return (
     <section id={id} className="flex flex-col gap-4">
       <div>
-        <h2 className="text-lg font-bold text-zinc-100">{title}</h2>
-        <p className="mt-1 text-sm text-zinc-500">{subtitle}</p>
+        <h2 className="font-display text-lg font-bold text-slate-100">{title}</h2>
+        <p className="mt-1 text-sm text-slate-500">{subtitle}</p>
       </div>
       {children}
     </section>
@@ -119,12 +119,12 @@ export default function DevelopersPage() {
         <div className="mb-3 inline-block rounded-full border border-cipher-500/30 bg-cipher-500/10 px-3 py-1 font-mono text-xs font-medium uppercase tracking-widest text-cipher-400">
           Developer Kit
         </div>
-        <h1 className="text-3xl font-bold text-zinc-100">
+        <h1 className="font-display text-3xl font-bold text-slate-100">
           Build with the official Zama registry
         </h1>
-        <p className="mt-3 leading-relaxed text-zinc-500">
+        <p className="mt-3 leading-relaxed text-slate-500">
           Every snippet on this page uses real, verified Sepolia addresses from{' '}
-          <code className="rounded bg-zinc-800 px-1 text-xs text-zinc-300">
+          <code className="rounded bg-space-700 px-1 text-xs text-slate-300">
             src/config/zamaSepolia.ts
           </code>
           {' '}— the single source of truth in CipherWrap.
@@ -139,27 +139,27 @@ export default function DevelopersPage() {
           <h2 className="mb-3 text-sm font-bold uppercase tracking-widest text-cipher-400">
             Why use the official registry?
           </h2>
-          <div className="flex flex-col gap-2 text-sm text-zinc-400">
+          <div className="flex flex-col gap-2 text-sm text-slate-400">
             <p>
               The Zama Wrappers Registry is the canonical on-chain index of all
               production-grade ERC-7984 confidential wrappers for Sepolia.
               Integrating it — rather than deploying your own throwaway wrapper —
               gives you:
             </p>
-            <ul className="ml-4 flex list-disc flex-col gap-1 text-zinc-500">
+            <ul className="ml-4 flex list-disc flex-col gap-1 text-slate-500">
               <li>
-                <span className="text-zinc-300">Shared liquidity.</span>{' '}
+                <span className="text-slate-300">Shared liquidity.</span>{' '}
                 Your users share depth with every other app that wraps the same
                 underlying token.
               </li>
               <li>
-                <span className="text-zinc-300">Revocation visibility.</span>{' '}
-                The <code className="rounded bg-zinc-800 px-0.5 text-xs">isValid</code>{' '}
+                <span className="text-slate-300">Revocation visibility.</span>{' '}
+                The <code className="rounded bg-space-700 px-0.5 text-xs">isValid</code>{' '}
                 flag lets you disable wrap/unwrap instantly if a wrapper is
                 deprecated — no redeployment needed.
               </li>
               <li>
-                <span className="text-zinc-300">One place to check for new pairs.</span>{' '}
+                <span className="text-slate-300">One place to check for new pairs.</span>{' '}
                 When Zama deploys new wrappers, your app discovers them
                 automatically at runtime.
               </li>
@@ -183,7 +183,7 @@ export default function DevelopersPage() {
           subtitle="Select any known wrapper — all snippets update to show that pair's real addresses."
         >
           {/* Token selector */}
-          <div className="flex flex-wrap items-center gap-3 rounded-xl border border-zinc-800 bg-zinc-900/50 p-4">
+          <div className="flex flex-wrap items-center gap-3 rounded-xl border border-blue-900/20 bg-space-800/50 p-4 backdrop-blur-sm">
             <span className="text-xs text-zinc-500">Token:</span>
             <div className="flex flex-wrap gap-2">
               {WRAPPER_ROWS.map((w) => (
@@ -270,28 +270,28 @@ export default function DevelopersPage() {
         >
           <AddressRow label="Wrappers Registry" address={WRAPPERS_REGISTRY} />
 
-          <div className="overflow-hidden rounded-xl border border-zinc-800">
-            <div className="border-b border-zinc-800 bg-zinc-900/60 px-4 py-2">
-              <p className="text-xs text-zinc-500">
+          <div className="overflow-hidden rounded-xl border border-blue-900/20">
+            <div className="border-b border-blue-900/20 bg-space-800/60 px-4 py-2">
+              <p className="text-xs text-slate-500">
                 Known wrapper pairs · Sepolia (chainId {SEPOLIA_CHAIN_ID})
               </p>
             </div>
-            <div className="divide-y divide-zinc-800/60">
+            <div className="divide-y divide-blue-900/15">
               {WRAPPER_ROWS.map((row) => (
-                <div key={row.wrapper} className="px-4 py-3">
+                <div key={row.wrapper} className="bg-space-800/30 px-4 py-3">
                   <div className="mb-2 flex flex-wrap items-center gap-2">
                     <Link
                       href={`/token/${row.wrapper}`}
-                      className="font-mono text-sm font-semibold text-zinc-200 hover:text-cipher-300"
+                      className="font-mono text-sm font-semibold text-slate-200 hover:text-cipher-300"
                     >
                       {row.symbol}
                     </Link>
-                    <span className="text-xs text-zinc-600">{row.name}</span>
+                    <span className="text-xs text-slate-600">{row.name}</span>
                     <span
                       className={`ml-auto rounded px-1.5 py-0.5 text-xs font-medium ${
                         row.faucet === 'public-mock'
                           ? 'bg-emerald-500/10 text-emerald-400'
-                          : 'bg-zinc-700/50 text-zinc-500'
+                          : 'bg-space-700/50 text-slate-500'
                       }`}
                     >
                       {row.faucet === 'public-mock' ? 'Public faucet' : 'Restricted'}
@@ -299,23 +299,23 @@ export default function DevelopersPage() {
                   </div>
                   <div className="flex flex-col gap-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="w-20 text-xs text-zinc-600">Wrapper</span>
-                      <code className="flex-1 break-all font-mono text-xs text-zinc-400">
+                      <span className="w-20 text-xs text-slate-600">Wrapper</span>
+                      <code className="flex-1 break-all font-mono text-xs text-slate-400">
                         {row.wrapper}
                       </code>
                       <CopyInline text={row.wrapper} />
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="w-20 text-xs text-zinc-600">Underlying</span>
-                      <code className="flex-1 break-all font-mono text-xs text-zinc-400">
+                      <span className="w-20 text-xs text-slate-600">Underlying</span>
+                      <code className="flex-1 break-all font-mono text-xs text-slate-400">
                         {row.underlying}
                       </code>
                       <CopyInline text={row.underlying} />
                     </div>
                     {row.decimals !== undefined && (
                       <div className="flex items-center gap-2">
-                        <span className="w-20 text-xs text-zinc-600">Decimals</span>
-                        <span className="font-mono text-xs text-zinc-500">{row.decimals}</span>
+                        <span className="w-20 text-xs text-slate-600">Decimals</span>
+                        <span className="font-mono text-xs text-slate-500">{row.decimals}</span>
                       </div>
                     )}
                     {row.note && (
@@ -362,12 +362,12 @@ export default function DevelopersPage() {
                 href={link.href}
                 target={link.href.startsWith('http') ? '_blank' : undefined}
                 rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                className="group rounded-xl border border-zinc-800 bg-zinc-900/50 p-4 hover:border-zinc-700"
+                className="group rounded-xl border border-blue-900/20 bg-space-800/50 p-4 backdrop-blur-sm transition-colors hover:border-blue-700/30"
               >
                 <p className="text-sm font-semibold text-cipher-300 group-hover:text-cipher-200">
                   {link.label} ↗
                 </p>
-                <p className="mt-1 text-xs text-zinc-600">{link.desc}</p>
+                <p className="mt-1 text-xs text-slate-600">{link.desc}</p>
               </a>
             ))}
           </div>

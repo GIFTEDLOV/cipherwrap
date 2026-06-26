@@ -50,7 +50,7 @@ function Banner({
   const styles =
     variant === 'warn'
       ? 'border-amber-600/40 bg-amber-500/5 text-amber-300'
-      : 'border-zinc-700 bg-zinc-900/50 text-zinc-300'
+      : 'border-space-700/40 bg-space-800/50 text-slate-300'
   return (
     <div className={`rounded-xl border p-4 ${styles}`}>
       <p className="font-semibold">{title}</p>
@@ -71,16 +71,16 @@ function StepCard({
   children: React.ReactNode
 }) {
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-900/60 p-4">
+    <div className="rounded-xl border border-blue-900/20 bg-space-800/60 p-4 backdrop-blur-sm">
       <div className="mb-3 flex items-center gap-2">
         <span
           className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-            done ? 'bg-emerald-500 text-black' : 'bg-zinc-700 text-zinc-300'
+            done ? 'bg-emerald-500 text-black' : 'bg-space-700 text-slate-300'
           }`}
         >
           {step}
         </span>
-        <h2 className="font-semibold text-zinc-200">{title}</h2>
+        <h2 className="font-semibold text-slate-200">{title}</h2>
         {done && (
           <span className="ml-auto text-xs font-medium text-emerald-400">
             ✓ Done
@@ -214,7 +214,7 @@ function AmountInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         disabled={disabled}
-        className="w-36 rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-1.5 text-sm text-zinc-200 disabled:opacity-50 focus:border-cipher-500 focus:outline-none"
+        className="w-36 rounded-lg border border-space-700 bg-space-950 px-3 py-1.5 text-sm text-slate-200 disabled:opacity-50 focus:border-blue-500/50 focus:outline-none"
       />
       <span className="text-xs text-zinc-500">{symbol}</span>
     </div>
@@ -425,7 +425,7 @@ export default function DebugWrapPage() {
         <span className="rounded bg-amber-500/15 px-2 py-0.5 font-mono text-xs text-amber-400">
           /debug
         </span>
-        <h1 className="text-xl font-bold text-zinc-100">
+        <h1 className="font-display text-xl font-bold text-slate-100">
           Mint → Approve → Wrap → Decrypt
         </h1>
       </div>
@@ -435,14 +435,14 @@ export default function DebugWrapPage() {
       </p>
 
       {/* Wrapper selector — mock wrappers only */}
-      <div className="mb-6 rounded-xl border border-zinc-800 bg-zinc-900/60 p-4">
-        <label className="mb-2 block text-xs font-semibold uppercase tracking-widest text-zinc-500">
+      <div className="mb-6 rounded-xl border border-blue-900/20 bg-space-800/60 p-4 backdrop-blur-sm">
+        <label className="mb-2 block text-xs font-semibold uppercase tracking-widest text-slate-500">
           Wrapper under test (public-mint only)
         </label>
         <select
           value={selectedWrapper}
           onChange={handleWrapperChange}
-          className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-200 focus:border-cipher-500 focus:outline-none"
+          className="w-full rounded-lg border border-space-700 bg-space-950 px-3 py-2 text-sm text-slate-200 focus:border-blue-500/50 focus:outline-none"
         >
           {MOCK_WRAPPERS.map((w) => (
             <option key={w.wrapper} value={w.wrapper}>
