@@ -16,6 +16,7 @@ import {
   type PairStatus,
   type RawRegistryPair,
 } from '@/lib/registryIntelligence'
+import { WrongNetworkBanner } from '@/components/WrongNetworkBanner'
 
 type FilterKey = 'all' | 'valid' | 'faucet' | 'review'
 
@@ -350,12 +351,7 @@ export default function RegistryPage() {
           page. Registry data is public and visible regardless.
         </div>
       )}
-      {isConnected && !onSepolia && (
-        <div className="mb-5 rounded-lg border border-amber-700/30 bg-amber-950/10 px-4 py-2.5 text-sm text-amber-500">
-          Switch to Sepolia to enable transactions — all Zama contracts are
-          on chainId 11155111.
-        </div>
-      )}
+      <WrongNetworkBanner />
 
       {/* ── Search + filter bar ─────────────────────────────────────────────── */}
       <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center">

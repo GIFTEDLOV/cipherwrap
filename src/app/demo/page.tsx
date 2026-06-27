@@ -31,6 +31,7 @@ import { registryAbi } from '@/abis/registry'
 import { mockErc20Abi } from '@/abis/mockErc20'
 import { WRAPPERS_REGISTRY, SEPOLIA_CHAIN_ID } from '@/config/zamaSepolia'
 import { classifyPairs, type RawRegistryPair } from '@/lib/registryIntelligence'
+import { WrongNetworkBanner } from '@/components/WrongNetworkBanner'
 
 // ── demo constants ────────────────────────────────────────────────────────────
 
@@ -511,7 +512,7 @@ export default function DemoPage() {
 
   // ── handlers ──────────────────────────────────────────────────────────────
   function handleMint() {
-    if (!address) return
+    if (!onSepolia || !address) return
     resetMint()
     callMint({
       address: DEMO_UNDERLYING,
@@ -522,11 +523,13 @@ export default function DemoPage() {
   }
 
   function handleApprove() {
+    if (!onSepolia) return
     resetApprove()
     doApprove({ amount: parseUnits('100', DEMO_DECIMALS) })
   }
 
   function handleShield() {
+    if (!onSepolia) return
     resetShield()
     setShieldSubmittedHash(null)
     doShield({
@@ -537,6 +540,7 @@ export default function DemoPage() {
   }
 
   function handleUnshield() {
+    if (!onSepolia) return
     resetUnshield()
     setUnshieldPhase1Hash(null)
     setUnshieldFinalizing(false)
@@ -558,6 +562,8 @@ export default function DemoPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
       <ProgressBar completed={completedCount} total={8} />
+
+      <WrongNetworkBanner />
 
       <div className="flex flex-col gap-2">
 

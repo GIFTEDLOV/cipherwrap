@@ -32,6 +32,7 @@ import { registryAbi } from '@/abis/registry'
 import { mockErc20Abi } from '@/abis/mockErc20'
 import { WRAPPERS_REGISTRY, SEPOLIA_CHAIN_ID, getKnownWrapper } from '@/config/zamaSepolia'
 import { CodeBlock } from '@/components/CodeBlock'
+import { WrongNetworkBanner } from '@/components/WrongNetworkBanner'
 import { makeConfigSnippet, makeWrapSnippet, makeDecryptSnippet, makeUnwrapSnippet } from '@/lib/devSnippets'
 import { classifyPairs, type RawRegistryPair, type ClassifiedPair } from '@/lib/registryIntelligence'
 
@@ -295,6 +296,7 @@ export default function TokenDetailPage() {
     try { const n = Number(mintAmountStr); return (mintAmountStr && n > 0 && n <= 999_999) ? parseUnits(mintAmountStr, decimals) : null } catch { return null }
   }
   function handleMint() {
+    if (!onSepolia) return
     const amt = parseMintAmount()
     if (!amt || !address) return
     resetMint()
@@ -304,12 +306,14 @@ export default function TokenDetailPage() {
   // ── approve ───────────────────────────────────────────────────────────────
   const { mutate: doApprove, isPending: approvePending, data: approveResult, error: approveError, reset: resetApprove } = useApproveUnderlying(wrapperAddress)
   function handleApprove() {
+    if (!onSepolia) return
     try { const amt = parseUnits(wrapAmountStr, decimals); resetApprove(); doApprove({ amount: amt }) } catch {}
   }
 
   // ── shield (wrap) ─────────────────────────────────────────────────────────
   const { mutate: doShield, isPending: shieldPending, data: shieldResult, error: shieldError, reset: resetShield } = useShield({ address: wrapperAddress })
   function handleShield() {
+    if (!onSepolia) return
     try {
       const amt = parseUnits(wrapAmountStr, decimals)
       resetShield(); setShieldSubmittedHash(null)
@@ -332,6 +336,7 @@ export default function TokenDetailPage() {
   // ── unshield (unwrap) ─────────────────────────────────────────────────────
   const { mutate: doUnshield, isPending: unshieldPending, data: unshieldResult, error: unshieldError, reset: resetUnshield } = useUnshield(wrapperAddress)
   function handleUnshield() {
+    if (!onSepolia) return
     try {
       const amt = parseUnits(unwrapAmountStr, decimals)
       resetUnshield(); setUnshieldPhase1Hash(null); setUnshieldFinalizing(false); setUnshieldPhase2Hash(null)
@@ -342,7 +347,7 @@ export default function TokenDetailPage() {
   // ── resume unshield ───────────────────────────────────────────────────────
   const { mutate: doResume, isPending: resumePending, data: resumeResult, error: resumeError, reset: resetResume } = useResumeUnshield(wrapperAddress)
   function handleResume() {
-    if (!resumeHashInput.startsWith('0x')) return
+    if (!onSepolia || !resumeHashInput.startsWith('0x')) return
     resetResume()
     doResume({ unwrapTxHash: resumeHashInput as Hex, onFinalizing: () => setUnshieldFinalizing(true), onFinalizeSubmitted: (h) => setUnshieldPhase2Hash(h) })
   }
@@ -484,14 +489,7 @@ export default function TokenDetailPage() {
           <span className="shrink-0 text-xs text-slate-600">↑ top right</span>
         </div>
       )}
-      {isConnected && !onSepolia && (
-        <div className="mb-5 rounded-xl border border-amber-600/30 bg-amber-500/5 px-4 py-3">
-          <p className="text-sm font-semibold text-amber-400">Switch to Sepolia</p>
-          <p className="mt-0.5 text-xs text-zinc-500">
-            All Zama FHE contracts are on Sepolia (chainId {SEPOLIA_CHAIN_ID}). Use the wallet to switch networks.
-          </p>
-        </div>
-      )}
+      <WrongNetworkBanner />
 
       {/* ── Action panels — connected + Sepolia ────────────────────────────── */}
       {isConnected && onSepolia && (

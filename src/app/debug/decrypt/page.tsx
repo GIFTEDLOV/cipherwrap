@@ -14,6 +14,7 @@ import {
   TransportKeyPairExpiredError,
 } from '@zama-fhe/sdk'
 import { KNOWN_WRAPPERS, SEPOLIA_CHAIN_ID } from '@/config/zamaSepolia'
+import { WrongNetworkBanner } from '@/components/WrongNetworkBanner'
 
 const WRAPPER_OPTIONS = Object.values(KNOWN_WRAPPERS)
 const DEFAULT_WRAPPER = '0x7c5BF43B851c1dff1a4feE8dB225b87f2C223639' // cUSDCMock
@@ -238,13 +239,7 @@ export default function DebugDecryptPage() {
       )}
 
       {/* Gate: wrong network */}
-      {isConnected && !onSepolia && (
-        <Banner
-          variant="warn"
-          title="Wrong network"
-          body="Switch to Sepolia using the button in the header. Decryption requires Sepolia."
-        />
-      )}
+      <WrongNetworkBanner />
 
       {/* Main flow: connected + on Sepolia */}
       {isConnected && onSepolia && (

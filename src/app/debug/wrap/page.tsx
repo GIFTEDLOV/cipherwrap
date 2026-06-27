@@ -25,6 +25,7 @@ import {
 } from '@zama-fhe/sdk'
 import { KNOWN_WRAPPERS, SEPOLIA_CHAIN_ID } from '@/config/zamaSepolia'
 import { mockErc20Abi } from '@/abis/mockErc20'
+import { WrongNetworkBanner } from '@/components/WrongNetworkBanner'
 
 const MOCK_WRAPPERS = Object.values(KNOWN_WRAPPERS).filter(
   (w) => w.faucet === 'public-mock',
@@ -323,6 +324,7 @@ export default function DebugWrapPage() {
   const mintError = mintWriteError ?? mintConfirmError
 
   function handleMint() {
+    if (!onSepolia) return
     const amount = parseMintUnits()
     if (!amount || !address || !underlyingAddress) return
     resetMint()
@@ -346,6 +348,7 @@ export default function DebugWrapPage() {
   const approveDone = !!approveResult
 
   function handleApprove() {
+    if (!onSepolia) return
     const amount = parseWrapUnits()
     if (!amount) return
     resetApprove()
@@ -364,6 +367,7 @@ export default function DebugWrapPage() {
   const shieldDone = !!shieldResult
 
   function handleShield() {
+    if (!onSepolia) return
     const amount = parseWrapUnits()
     if (!amount) return
     resetShield()
@@ -492,13 +496,7 @@ export default function DebugWrapPage() {
       )}
 
       {/* Gate: wrong network */}
-      {isConnected && !onSepolia && (
-        <Banner
-          variant="warn"
-          title="Wrong network"
-          body="Switch to Sepolia using the button in the header. All steps require Sepolia."
-        />
-      )}
+      <WrongNetworkBanner />
 
       {/* Main flow */}
       {isConnected && onSepolia && (
