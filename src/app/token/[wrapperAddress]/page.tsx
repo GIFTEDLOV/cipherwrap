@@ -204,6 +204,9 @@ function ActionError({ error, onRetry }: { error: Error; onRetry?: () => void })
       {open && (
         <pre className="mt-2 max-h-24 overflow-auto rounded bg-zinc-950 p-2 font-mono text-xs leading-relaxed text-zinc-500 whitespace-pre-wrap break-all">
           {error.message}
+          {(error as { cause?: Error }).cause?.message
+            ? `\n\nCause: ${(error as { cause?: Error }).cause!.message}`
+            : ''}
         </pre>
       )}
     </div>
@@ -341,7 +344,7 @@ export default function TokenDetailPage() {
     try {
       const amt = parseUnits(unwrapAmountStr, decimals)
       resetUnshield(); setUnshieldPhase1Hash(null); setUnshieldFinalizing(false); setUnshieldPhase2Hash(null)
-      doUnshield({ amount: amt, onUnwrapSubmitted: (h) => setUnshieldPhase1Hash(h), onFinalizing: () => setUnshieldFinalizing(true), onFinalizeSubmitted: (h) => setUnshieldPhase2Hash(h) })
+      doUnshield({ amount: amt, skipBalanceCheck: true, onUnwrapSubmitted: (h) => setUnshieldPhase1Hash(h), onFinalizing: () => setUnshieldFinalizing(true), onFinalizeSubmitted: (h) => setUnshieldPhase2Hash(h) })
     } catch {}
   }
 

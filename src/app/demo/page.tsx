@@ -115,6 +115,9 @@ function StepError({ error, onRetry }: { error: Error; onRetry?: () => void }) {
       {open && (
         <pre className="mt-2 max-h-32 overflow-auto rounded bg-zinc-950 p-2 font-mono text-xs leading-relaxed text-zinc-500 whitespace-pre-wrap break-all">
           {error.message}
+          {(error as { cause?: Error }).cause?.message
+            ? `\n\nCause: ${(error as { cause?: Error }).cause!.message}`
+            : ''}
         </pre>
       )}
     </div>
@@ -547,6 +550,7 @@ export default function DemoPage() {
     setUnshieldPhase2Hash(null)
     doUnshield({
       amount: parseUnits('100', DEMO_DECIMALS),
+      skipBalanceCheck: true,
       onUnwrapSubmitted: (hash) => setUnshieldPhase1Hash(hash),
       onFinalizing: () => setUnshieldFinalizing(true),
       onFinalizeSubmitted: (hash) => setUnshieldPhase2Hash(hash),
