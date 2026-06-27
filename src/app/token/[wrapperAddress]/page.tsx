@@ -6,13 +6,12 @@ import { useParams } from 'next/navigation'
 import { isAddress, formatUnits, parseUnits, type Hex } from 'viem'
 import {
   useAccount,
-  useChainId,
   useReadContract,
   useWriteContract,
   useWaitForTransactionReceipt,
 } from 'wagmi'
-import { getChainId } from '@wagmi/core'
-import { wagmiConfig } from '@/lib/wagmiConfig'
+import { useChainGuard } from '@/components/ChainGuard'
+import { getWalletChainId } from '@/lib/chainIdStore'
 import {
   useHasPermit,
   useGrantPermit,
@@ -221,8 +220,8 @@ export default function TokenDetailPage() {
   const wrapperAddress: `0x${string}` = isValidAddr ? (rawParam as `0x${string}`) : ZERO_ADDR
 
   const { address, isConnected } = useAccount()
-  const chainId = useChainId()
-  const onSepolia = chainId === SEPOLIA_CHAIN_ID
+  // Use ChainGuard — reads directly from window.ethereum, not wagmi's store
+  const { onSepolia } = useChainGuard()
 
   const knownMeta = getKnownWrapper(wrapperAddress)
 
@@ -298,7 +297,7 @@ export default function TokenDetailPage() {
     try { const n = Number(mintAmountStr); return (mintAmountStr && n > 0 && n <= 999_999) ? parseUnits(mintAmountStr, decimals) : null } catch { return null }
   }
   function handleMint() {
-    if (getChainId(wagmiConfig) !== SEPOLIA_CHAIN_ID) return
+    if (getWalletChainId() !== SEPOLIA_CHAIN_ID) return
     const amt = parseMintAmount()
     if (!amt || !address) return
     resetMint()
@@ -308,14 +307,14 @@ export default function TokenDetailPage() {
   // ── approve ───────────────────────────────────────────────────────────────
   const { mutate: doApprove, isPending: approvePending, data: approveResult, error: approveError, reset: resetApprove } = useApproveUnderlying(wrapperAddress)
   function handleApprove() {
-    if (getChainId(wagmiConfig) !== SEPOLIA_CHAIN_ID) return
+    if (getWalletChainId() !== SEPOLIA_CHAIN_ID) return
     try { const amt = parseUnits(wrapAmountStr, decimals); resetApprove(); doApprove({ amount: amt }) } catch {}
   }
 
   // ── shield (wrap) ─────────────────────────────────────────────────────────
   const { mutate: doShield, isPending: shieldPending, data: shieldResult, error: shieldError, reset: resetShield } = useShield({ address: wrapperAddress })
   function handleShield() {
-    if (getChainId(wagmiConfig) !== SEPOLIA_CHAIN_ID) return
+    if (getWalletChainId() !== SEPOLIA_CHAIN_ID) return
     try {
       const amt = parseUnits(wrapAmountStr, decimals)
       resetShield(); setShieldSubmittedHash(null)
@@ -338,7 +337,7 @@ export default function TokenDetailPage() {
   // ── unshield (unwrap) ─────────────────────────────────────────────────────
   const { mutate: doUnshield, isPending: unshieldPending, data: unshieldResult, error: unshieldError, reset: resetUnshield } = useUnshield(wrapperAddress)
   function handleUnshield() {
-    if (getChainId(wagmiConfig) !== SEPOLIA_CHAIN_ID) return
+    if (getWalletChainId() !== SEPOLIA_CHAIN_ID) return
     try {
       const amt = parseUnits(unwrapAmountStr, decimals)
       resetUnshield(); setUnshieldPhase1Hash(null); setUnshieldFinalizing(false); setUnshieldPhase2Hash(null)
@@ -349,13 +348,13 @@ export default function TokenDetailPage() {
   // ── resume unshield ───────────────────────────────────────────────────────
   const { mutate: doResume, isPending: resumePending, data: resumeResult, error: resumeError, reset: resetResume } = useResumeUnshield(wrapperAddress)
   function handleResume() {
-    if (getChainId(wagmiConfig) !== SEPOLIA_CHAIN_ID || !resumeHashInput.startsWith('0x')) return
+    if (getWalletChainId() !== SEPOLIA_CHAIN_ID || !resumeHashInput.startsWith('0x')) return
     resetResume()
     doResume({ unwrapTxHash: resumeHashInput as Hex, onFinalizing: () => setUnshieldFinalizing(true), onFinalizeSubmitted: (h) => setUnshieldPhase2Hash(h) })
   }
 
   function handleGrantPermit() {
-    if (getChainId(wagmiConfig) !== SEPOLIA_CHAIN_ID) return
+    if (getWalletChainId() !== SEPOLIA_CHAIN_ID) return
     resetGrant()
     grantPermit([wrapperAddress])
   }

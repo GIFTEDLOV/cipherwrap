@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { useAccount, useChainId, useReadContract } from 'wagmi'
+import { useAccount, useReadContract } from 'wagmi'
+import { useChainGuard } from '@/components/ChainGuard'
 import { registryAbi } from '@/abis/registry'
 import {
   WRAPPERS_REGISTRY,
@@ -253,8 +254,7 @@ export default function RegistryPage() {
   const [activeFilter, setActiveFilter] = useState<FilterKey>('all')
 
   const { isConnected } = useAccount()
-  const chainId = useChainId()
-  const onSepolia = chainId === SEPOLIA_CHAIN_ID
+  const { onSepolia } = useChainGuard()
 
   const {
     data: pairsResult,

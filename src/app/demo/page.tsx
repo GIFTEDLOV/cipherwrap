@@ -6,12 +6,13 @@ import { formatUnits, parseUnits } from 'viem'
 import type { Hex } from 'viem'
 import {
   useAccount,
-  useChainId,
   useReadContract,
   useWriteContract,
   useWaitForTransactionReceipt,
   useSwitchChain,
 } from 'wagmi'
+import { useChainGuard } from '@/components/ChainGuard'
+import { getWalletChainId } from '@/lib/chainIdStore'
 import {
   useHasPermit,
   useGrantPermit,
@@ -32,8 +33,6 @@ import { mockErc20Abi } from '@/abis/mockErc20'
 import { WRAPPERS_REGISTRY, SEPOLIA_CHAIN_ID } from '@/config/zamaSepolia'
 import { classifyPairs, type RawRegistryPair } from '@/lib/registryIntelligence'
 import { WrongNetworkBanner } from '@/components/WrongNetworkBanner'
-import { getChainId } from '@wagmi/core'
-import { wagmiConfig } from '@/lib/wagmiConfig'
 
 // ── demo constants ────────────────────────────────────────────────────────────
 
@@ -337,8 +336,7 @@ export default function DemoPage() {
 
   // ── wallet / network ──────────────────────────────────────────────────────
   const { address, isConnected } = useAccount()
-  const chainId = useChainId()
-  const onSepolia = chainId === SEPOLIA_CHAIN_ID
+  const { onSepolia } = useChainGuard()
   const { switchChain, isPending: switchPending } = useSwitchChain()
 
   // ── registry read ─────────────────────────────────────────────────────────
@@ -514,7 +512,7 @@ export default function DemoPage() {
 
   // ── handlers ──────────────────────────────────────────────────────────────
   function handleMint() {
-    if (getChainId(wagmiConfig) !== SEPOLIA_CHAIN_ID || !address) return
+    if (getWalletChainId() !== SEPOLIA_CHAIN_ID || !address) return
     resetMint()
     callMint({
       address: DEMO_UNDERLYING,
@@ -525,13 +523,13 @@ export default function DemoPage() {
   }
 
   function handleApprove() {
-    if (getChainId(wagmiConfig) !== SEPOLIA_CHAIN_ID) return
+    if (getWalletChainId() !== SEPOLIA_CHAIN_ID) return
     resetApprove()
     doApprove({ amount: parseUnits('100', DEMO_DECIMALS) })
   }
 
   function handleShield() {
-    if (getChainId(wagmiConfig) !== SEPOLIA_CHAIN_ID) return
+    if (getWalletChainId() !== SEPOLIA_CHAIN_ID) return
     resetShield()
     setShieldSubmittedHash(null)
     doShield({
@@ -542,7 +540,7 @@ export default function DemoPage() {
   }
 
   function handleUnshield() {
-    if (getChainId(wagmiConfig) !== SEPOLIA_CHAIN_ID) return
+    if (getWalletChainId() !== SEPOLIA_CHAIN_ID) return
     resetUnshield()
     setUnshieldPhase1Hash(null)
     setUnshieldFinalizing(false)

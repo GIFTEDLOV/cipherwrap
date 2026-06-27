@@ -6,6 +6,7 @@ import { ZamaProvider } from '@zama-fhe/react-sdk'
 import { useState } from 'react'
 import { wagmiConfig } from '@/lib/wagmiConfig'
 import { zamaConfig } from '@/lib/zamaConfig'
+import { ChainGuardProvider } from '@/components/ChainGuard'
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -23,7 +24,13 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <ZamaProvider config={zamaConfig}>{children}</ZamaProvider>
+        <ZamaProvider config={zamaConfig}>
+          {/* ChainGuardProvider reads chain directly from window.ethereum,
+              bypassing wagmi's config-limited chain detection */}
+          <ChainGuardProvider>
+            {children}
+          </ChainGuardProvider>
+        </ZamaProvider>
       </QueryClientProvider>
     </WagmiProvider>
   )

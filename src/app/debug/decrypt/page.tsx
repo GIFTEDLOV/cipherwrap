@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useAccount, useChainId } from 'wagmi'
+import { useAccount } from 'wagmi'
+import { useChainGuard } from '@/components/ChainGuard'
 import {
   useHasPermit,
   useGrantPermit,
@@ -133,8 +134,7 @@ function ErrorPanel({
 
 export default function DebugDecryptPage() {
   const { address, isConnected } = useAccount()
-  const chainId = useChainId()
-  const onSepolia = chainId === SEPOLIA_CHAIN_ID
+  const { onSepolia } = useChainGuard()
 
   const [selectedWrapper, setSelectedWrapper] =
     useState<`0x${string}`>(DEFAULT_WRAPPER)

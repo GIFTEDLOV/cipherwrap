@@ -1,19 +1,21 @@
 'use client'
 
-import { useAccount, useChainId, useSwitchChain } from 'wagmi'
+import { useAccount, useSwitchChain } from 'wagmi'
 import { SEPOLIA_CHAIN_ID } from '@/config/zamaSepolia'
+import { useChainGuard } from '@/components/ChainGuard'
 
 /**
  * Full-width amber banner shown whenever the connected wallet is not on Sepolia.
- * Renders nothing when disconnected or already on the right chain.
- * Self-contained: manages the chain switch itself.
+ * Uses ChainGuard (window.ethereum direct read) — not wagmi's useChainId() —
+ * so it correctly detects any non-Sepolia chain regardless of wagmi's config.
  */
 export function WrongNetworkBanner() {
   const { isConnected } = useAccount()
-  const chainId = useChainId()
+  const { walletChainId, onSepolia } = useChainGuard()
   const { switchChain, isPending } = useSwitchChain()
 
-  if (!isConnected || chainId === SEPOLIA_CHAIN_ID) return null
+  // Not connected, or we haven't read the chain yet, or already on Sepolia
+  if (!isConnected || walletChainId === null || onSepolia) return null
 
   return (
     <div

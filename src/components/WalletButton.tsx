@@ -1,8 +1,9 @@
 'use client'
 
-import { useAccount, useConnect, useDisconnect, useChainId, useSwitchChain } from 'wagmi'
+import { useAccount, useConnect, useDisconnect, useSwitchChain } from 'wagmi'
 import { injected } from 'wagmi/connectors'
 import { SEPOLIA_CHAIN_ID } from '@/config/zamaSepolia'
+import { useChainGuard } from '@/components/ChainGuard'
 
 function shorten(addr: string) {
   return `${addr.slice(0, 6)}…${addr.slice(-4)}`
@@ -12,10 +13,9 @@ export function WalletButton() {
   const { address, isConnected } = useAccount()
   const { connect, isPending: isConnecting } = useConnect()
   const { disconnect } = useDisconnect()
-  const chainId = useChainId()
   const { switchChain, isPending: isSwitching } = useSwitchChain()
-
-  const onSepolia = chainId === SEPOLIA_CHAIN_ID
+  // Use ChainGuard — reads directly from window.ethereum, not wagmi's config state
+  const { onSepolia } = useChainGuard()
 
   if (!isConnected) {
     return (
