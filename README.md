@@ -14,8 +14,9 @@ Zama's EIP-712 user-decryption flow.
 
 ## Live demo
 
-<!-- LIVE_URL -->
-> _Deployed on Vercel — link added after deploy._
+**[https://cipherwrap.vercel.app](https://cipherwrap.vercel.app)**
+
+> Deployed on Vercel — Sepolia testnet, no contract deployment required.
 
 ---
 
@@ -23,7 +24,7 @@ Zama's EIP-712 user-decryption flow.
 
 | Landing | Registry | Token detail | Decrypt |
 |---------|----------|--------------|---------|
-| ![Landing](./docs/screenshots/landing.png) | ![Registry](./docs/screenshots/registry.png) | ![Token detail](./docs/screenshots/token-detail.png) | ![Decrypt](./docs/screenshots/decrypt.png) |
+| ![Landing](./docs/screenshots/landing.jpg) | ![Registry](./docs/screenshots/registry.jpg) | ![Token detail](./docs/screenshots/token-detail.jpg) | ![Decrypt](./docs/screenshots/decrypt.jpg) |
 
 ---
 
