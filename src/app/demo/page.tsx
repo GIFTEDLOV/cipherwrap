@@ -32,6 +32,8 @@ import { mockErc20Abi } from '@/abis/mockErc20'
 import { WRAPPERS_REGISTRY, SEPOLIA_CHAIN_ID } from '@/config/zamaSepolia'
 import { classifyPairs, type RawRegistryPair } from '@/lib/registryIntelligence'
 import { WrongNetworkBanner } from '@/components/WrongNetworkBanner'
+import { getChainId } from '@wagmi/core'
+import { wagmiConfig } from '@/lib/wagmiConfig'
 
 // ── demo constants ────────────────────────────────────────────────────────────
 
@@ -512,7 +514,7 @@ export default function DemoPage() {
 
   // ── handlers ──────────────────────────────────────────────────────────────
   function handleMint() {
-    if (!onSepolia || !address) return
+    if (getChainId(wagmiConfig) !== SEPOLIA_CHAIN_ID || !address) return
     resetMint()
     callMint({
       address: DEMO_UNDERLYING,
@@ -523,13 +525,13 @@ export default function DemoPage() {
   }
 
   function handleApprove() {
-    if (!onSepolia) return
+    if (getChainId(wagmiConfig) !== SEPOLIA_CHAIN_ID) return
     resetApprove()
     doApprove({ amount: parseUnits('100', DEMO_DECIMALS) })
   }
 
   function handleShield() {
-    if (!onSepolia) return
+    if (getChainId(wagmiConfig) !== SEPOLIA_CHAIN_ID) return
     resetShield()
     setShieldSubmittedHash(null)
     doShield({
@@ -540,7 +542,7 @@ export default function DemoPage() {
   }
 
   function handleUnshield() {
-    if (!onSepolia) return
+    if (getChainId(wagmiConfig) !== SEPOLIA_CHAIN_ID) return
     resetUnshield()
     setUnshieldPhase1Hash(null)
     setUnshieldFinalizing(false)
@@ -667,7 +669,7 @@ export default function DemoPage() {
             </p>
           )}
           {(s4 === 'active' || (s4 === 'failed' && !isUserRejection(mintError))) && (
-            <PrimaryBtn onClick={handleMint} disabled={mintBusy}>
+            <PrimaryBtn onClick={handleMint} disabled={mintBusy || !onSepolia}>
               {mintAwaitingSig ? '⏳ Awaiting signature…'
                 : mintConfirming ? '⛏ Mining…'
                 : 'Mint 1,000 USDCMock'}
@@ -700,7 +702,7 @@ export default function DemoPage() {
             </div>
           )}
           {(s5 === 'active' || (s5 === 'failed' && !isUserRejection(approveError))) && (
-            <PrimaryBtn onClick={handleApprove} disabled={approvePending}>
+            <PrimaryBtn onClick={handleApprove} disabled={approvePending || !onSepolia}>
               {approvePending ? '⏳ Approving…' : 'Approve 100 USDCMock'}
             </PrimaryBtn>
           )}
@@ -741,7 +743,7 @@ export default function DemoPage() {
             </div>
           )}
           {(s6 === 'active' || (s6 === 'failed' && !isUserRejection(shieldError))) && (
-            <PrimaryBtn onClick={handleShield} disabled={shieldPending}>
+            <PrimaryBtn onClick={handleShield} disabled={shieldPending || !onSepolia}>
               {shieldPending
                 ? shieldSubmittedHash ? '⛏ Mining…' : '⏳ Encrypting + signing…'
                 : 'Wrap 100 USDCMock → cUSDCMock'}
@@ -772,7 +774,7 @@ export default function DemoPage() {
               {(s7 === 'active' || (s7 === 'failed' && !isUserRejection(grantError))) && (
                 <PrimaryBtn
                   onClick={() => { resetGrant(); grantPermit([DEMO_WRAPPER]) }}
-                  disabled={grantingPermit}
+                  disabled={grantingPermit || !onSepolia}
                 >
                   {grantingPermit ? '⏳ Awaiting signature…' : 'Grant permit (sign EIP-712, free)'}
                 </PrimaryBtn>
@@ -901,7 +903,7 @@ export default function DemoPage() {
           )}
 
           {(s8 === 'active' || (s8 === 'failed' && !isUserRejection(unshieldError))) && (
-            <PrimaryBtn onClick={handleUnshield} disabled={unshieldPending}>
+            <PrimaryBtn onClick={handleUnshield} disabled={unshieldPending || !onSepolia}>
               {unshieldPending
                 ? unshieldPhase2Hash ? '⛏ Finalizing…'
                   : unshieldFinalizing ? '⏳ Submitting finalize…'

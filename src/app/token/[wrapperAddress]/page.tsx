@@ -11,6 +11,8 @@ import {
   useWriteContract,
   useWaitForTransactionReceipt,
 } from 'wagmi'
+import { getChainId } from '@wagmi/core'
+import { wagmiConfig } from '@/lib/wagmiConfig'
 import {
   useHasPermit,
   useGrantPermit,
@@ -296,7 +298,7 @@ export default function TokenDetailPage() {
     try { const n = Number(mintAmountStr); return (mintAmountStr && n > 0 && n <= 999_999) ? parseUnits(mintAmountStr, decimals) : null } catch { return null }
   }
   function handleMint() {
-    if (!onSepolia) return
+    if (getChainId(wagmiConfig) !== SEPOLIA_CHAIN_ID) return
     const amt = parseMintAmount()
     if (!amt || !address) return
     resetMint()
@@ -306,14 +308,14 @@ export default function TokenDetailPage() {
   // ── approve ───────────────────────────────────────────────────────────────
   const { mutate: doApprove, isPending: approvePending, data: approveResult, error: approveError, reset: resetApprove } = useApproveUnderlying(wrapperAddress)
   function handleApprove() {
-    if (!onSepolia) return
+    if (getChainId(wagmiConfig) !== SEPOLIA_CHAIN_ID) return
     try { const amt = parseUnits(wrapAmountStr, decimals); resetApprove(); doApprove({ amount: amt }) } catch {}
   }
 
   // ── shield (wrap) ─────────────────────────────────────────────────────────
   const { mutate: doShield, isPending: shieldPending, data: shieldResult, error: shieldError, reset: resetShield } = useShield({ address: wrapperAddress })
   function handleShield() {
-    if (!onSepolia) return
+    if (getChainId(wagmiConfig) !== SEPOLIA_CHAIN_ID) return
     try {
       const amt = parseUnits(wrapAmountStr, decimals)
       resetShield(); setShieldSubmittedHash(null)
@@ -336,7 +338,7 @@ export default function TokenDetailPage() {
   // ── unshield (unwrap) ─────────────────────────────────────────────────────
   const { mutate: doUnshield, isPending: unshieldPending, data: unshieldResult, error: unshieldError, reset: resetUnshield } = useUnshield(wrapperAddress)
   function handleUnshield() {
-    if (!onSepolia) return
+    if (getChainId(wagmiConfig) !== SEPOLIA_CHAIN_ID) return
     try {
       const amt = parseUnits(unwrapAmountStr, decimals)
       resetUnshield(); setUnshieldPhase1Hash(null); setUnshieldFinalizing(false); setUnshieldPhase2Hash(null)
@@ -347,9 +349,15 @@ export default function TokenDetailPage() {
   // ── resume unshield ───────────────────────────────────────────────────────
   const { mutate: doResume, isPending: resumePending, data: resumeResult, error: resumeError, reset: resetResume } = useResumeUnshield(wrapperAddress)
   function handleResume() {
-    if (!onSepolia || !resumeHashInput.startsWith('0x')) return
+    if (getChainId(wagmiConfig) !== SEPOLIA_CHAIN_ID || !resumeHashInput.startsWith('0x')) return
     resetResume()
     doResume({ unwrapTxHash: resumeHashInput as Hex, onFinalizing: () => setUnshieldFinalizing(true), onFinalizeSubmitted: (h) => setUnshieldPhase2Hash(h) })
+  }
+
+  function handleGrantPermit() {
+    if (getChainId(wagmiConfig) !== SEPOLIA_CHAIN_ID) return
+    resetGrant()
+    grantPermit([wrapperAddress])
   }
 
   // ── early exit: invalid hex ───────────────────────────────────────────────
@@ -548,10 +556,10 @@ export default function TokenDetailPage() {
                     {grantError && (
                       <ActionError
                         error={grantError}
-                        onRetry={() => { resetGrant(); grantPermit([wrapperAddress]) }}
+                        onRetry={handleGrantPermit}
                       />
                     )}
-                    <Btn onClick={() => { resetGrant(); grantPermit([wrapperAddress]) }} disabled={grantingPermit}>
+                    <Btn onClick={handleGrantPermit} disabled={grantingPermit || !onSepolia}>
                       {grantingPermit ? '⏳ Awaiting signature…' : grantError ? 'Retry — Grant Permit' : 'Grant Permit (EIP-712, free)'}
                     </Btn>
                   </div>
@@ -612,7 +620,7 @@ export default function TokenDetailPage() {
                 {mintDone && mintTxHash && <TxSuccess label="Mint confirmed" hash={mintTxHash} />}
                 <div className="flex items-center gap-3">
                   {!mintDone ? (
-                    <Btn onClick={handleMint} disabled={mintBusy || !parseMintAmount() || !hasUnderlying}>
+                    <Btn onClick={handleMint} disabled={mintBusy || !parseMintAmount() || !hasUnderlying || !onSepolia}>
                       {mintSigning ? '⏳ Signing…' : mintConfirming ? '⛏ Mining…' : `Mint ${mintAmountStr} ${underlyingSymbol}`}
                     </Btn>
                   ) : (
@@ -658,7 +666,7 @@ export default function TokenDetailPage() {
                   )}
                   {approvePending && <Spinner label="Awaiting signature + mining…" />}
                   {approveResult && !approvePending && <TxSuccess label="Approved" hash={approveResult.txHash} />}
-                  <Btn onClick={handleApprove} disabled={approvePending}>
+                  <Btn onClick={handleApprove} disabled={approvePending || !onSepolia}>
                     {approvePending ? '⏳ Approving…' : approveResult ? `Re-approve ${wrapAmountStr} ${underlyingSymbol}` : `Approve ${wrapAmountStr} ${underlyingSymbol}`}
                   </Btn>
                 </div>
@@ -675,7 +683,7 @@ export default function TokenDetailPage() {
                   )}
                   {shieldResult && !shieldPending && <TxSuccess label="Wrapped — tokens are now confidential" hash={shieldResult.txHash} />}
                   <div className="flex items-center gap-3">
-                    <Btn onClick={handleShield} disabled={shieldPending}>
+                    <Btn onClick={handleShield} disabled={shieldPending || !onSepolia}>
                       {shieldPending
                         ? shieldSubmittedHash ? '⛏ Mining…' : '⏳ Encrypting + signing…'
                         : `Wrap ${wrapAmountStr} ${underlyingSymbol} → ${symbol}`}
@@ -752,7 +760,7 @@ export default function TokenDetailPage() {
 
                 <div className="flex items-center gap-3">
                   {!unshieldResult ? (
-                    <Btn onClick={handleUnshield} disabled={unshieldPending}>
+                    <Btn onClick={handleUnshield} disabled={unshieldPending || !onSepolia}>
                       {unshieldPending
                         ? unshieldPhase2Hash ? '⛏ Finalizing…' : unshieldFinalizing ? '⏳ Submitting finalize…' : unshieldPhase1Hash ? '⟳ Awaiting FHE proof…' : '⏳ Encrypting + signing…'
                         : `Unwrap ${unwrapAmountStr} ${symbol}`}
@@ -785,7 +793,7 @@ export default function TokenDetailPage() {
                     />
                     {resumeError && <ActionError error={resumeError} />}
                     {resumeResult && !resumePending && <TxSuccess label="Resume complete" hash={resumeResult.txHash} />}
-                    <Btn onClick={handleResume} disabled={resumePending || !resumeHashInput.startsWith('0x')} variant="ghost">
+                    <Btn onClick={handleResume} disabled={resumePending || !resumeHashInput.startsWith('0x') || !onSepolia} variant="ghost">
                       {resumePending ? '⏳ Finalizing…' : 'Resume finalize'}
                     </Btn>
                   </div>

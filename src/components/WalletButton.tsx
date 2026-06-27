@@ -15,6 +15,8 @@ export function WalletButton() {
   const chainId = useChainId()
   const { switchChain, isPending: isSwitching } = useSwitchChain()
 
+  const onSepolia = chainId === SEPOLIA_CHAIN_ID
+
   if (!isConnected) {
     return (
       <button
@@ -27,28 +29,9 @@ export function WalletButton() {
     )
   }
 
-  if (chainId !== SEPOLIA_CHAIN_ID) {
-    return (
-      <div className="flex items-center gap-2">
-        <span
-          className="rounded-md px-2 py-0.5 text-xs font-semibold"
-          style={{ background: 'rgba(245,158,11,0.15)', color: '#fbbf24' }}
-        >
-          Wrong network
-        </span>
-        <button
-          onClick={() => switchChain({ chainId: SEPOLIA_CHAIN_ID })}
-          disabled={isSwitching}
-          className="rounded-lg border border-amber-500/40 px-3 py-1.5 text-xs font-semibold text-amber-400 transition-colors hover:border-amber-400/70 hover:text-amber-300 disabled:opacity-50"
-        >
-          {isSwitching ? 'Switching…' : 'Switch to Sepolia'}
-        </button>
-      </div>
-    )
-  }
-
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2">
+      {/* Always show wallet address */}
       <span
         className="rounded-lg px-3 py-1.5 font-mono text-sm font-medium"
         style={{
@@ -59,6 +42,27 @@ export function WalletButton() {
       >
         {shorten(address!)}
       </span>
+
+      {/* Compact wrong-network indicator — visible whenever not on Sepolia */}
+      {!onSepolia && (
+        <>
+          <span
+            className="rounded-md px-2 py-0.5 text-xs font-bold"
+            style={{ background: 'rgba(245,158,11,0.2)', color: '#f59e0b' }}
+          >
+            ⚠ Wrong network
+          </span>
+          <button
+            onClick={() => switchChain({ chainId: SEPOLIA_CHAIN_ID })}
+            disabled={isSwitching}
+            className="rounded-lg border border-amber-500/50 bg-amber-500/15 px-3 py-1.5 text-xs font-bold text-amber-300 transition-colors hover:border-amber-400 hover:bg-amber-500/25 hover:text-amber-200 disabled:opacity-50"
+          >
+            {isSwitching ? 'Switching…' : 'Switch to Sepolia'}
+          </button>
+        </>
+      )}
+
+      {/* Disconnect always available */}
       <button
         onClick={() => disconnect()}
         className="rounded-lg border border-slate-700/60 px-3 py-1.5 text-xs font-medium text-slate-500 transition-colors hover:border-slate-600 hover:text-slate-300"
