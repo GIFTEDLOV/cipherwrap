@@ -7,6 +7,7 @@ import { WalletButton } from './WalletButton'
 const NAV = [
   { href: '/',           label: 'Home' },
   { href: '/registry',   label: 'Registry' },
+  { href: '/use-cases',  label: 'Use Cases' },
   { href: '/demo',       label: 'Demo' },
   { href: '/developers', label: 'Developers' },
 ]
