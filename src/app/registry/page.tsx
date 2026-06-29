@@ -342,6 +342,12 @@ export default function RegistryPage() {
           </code>
           {' · '}Sepolia
         </p>
+        <p className="mt-1.5 text-xs text-slate-600">
+          These wrappers power private invoices, payroll, and investor distributions.{' '}
+          <Link href="/use-cases" className="text-slate-500 underline underline-offset-2 hover:text-slate-300 transition-colors">
+            See real-world workflows →
+          </Link>
+        </p>
       </div>
 
       {/* ── Network / connection banners ────────────────────────────────────── */}

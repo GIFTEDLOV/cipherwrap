@@ -587,6 +587,104 @@ unshield({
             </Reveal>
           </section>
 
+          <div className="section-glow mx-auto max-w-4xl" />
+
+          {/* ── Section: Real-world use cases ──────────────────────────────── */}
+          <section className="mx-auto max-w-4xl px-4 py-24">
+            <Reveal>
+              <div className="mb-3 text-xs font-semibold uppercase tracking-widest" style={{ color: '#34d399' }}>
+                Real-world applications
+              </div>
+              <h2 className="mb-4 font-display text-4xl font-bold text-white md:text-5xl">
+                Beyond testing: real workflows
+              </h2>
+              <p className="mb-12 max-w-2xl text-base leading-relaxed" style={{ color: '#64748b' }}>
+                Confidential wrappers unlock private invoices, on-chain payroll, and investor
+                distributions — use cases where public ERC-20 balances create real commercial risk.
+              </p>
+            </Reveal>
+
+            <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {[
+                {
+                  icon: (
+                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                    </svg>
+                  ),
+                  label: 'Private Invoices',
+                  desc: 'Encrypted payment amounts — vendors see only their own receipts.',
+                  color: '#34d399',
+                  bg: 'rgba(52,211,153,0.06)',
+                  border: 'rgba(52,211,153,0.12)',
+                },
+                {
+                  icon: (
+                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
+                    </svg>
+                  ),
+                  label: 'Confidential Payroll',
+                  desc: 'Salary amounts visible only to the recipient — not coworkers.',
+                  color: '#60a5fa',
+                  bg: 'rgba(59,130,246,0.06)',
+                  border: 'rgba(59,130,246,0.12)',
+                },
+                {
+                  icon: (
+                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+                    </svg>
+                  ),
+                  label: 'Investor Distributions',
+                  desc: 'Cap table details stay private — investors see only their own share.',
+                  color: '#a78bfa',
+                  bg: 'rgba(139,92,246,0.06)',
+                  border: 'rgba(139,92,246,0.12)',
+                },
+              ].map((uc) => (
+                <Reveal key={uc.label}>
+                  <Link
+                    href="/use-cases"
+                    className="group block rounded-xl border p-5 backdrop-blur-sm transition-all duration-200"
+                    style={{ background: uc.bg, borderColor: uc.border }}
+                    onMouseEnter={e => {
+                      (e.currentTarget as HTMLElement).style.borderColor = uc.color.replace(')', ', 0.3)').replace('rgb', 'rgba')
+                    }}
+                    onMouseLeave={e => {
+                      (e.currentTarget as HTMLElement).style.borderColor = uc.border
+                    }}
+                  >
+                    <div
+                      className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-lg"
+                      style={{ background: uc.bg, color: uc.color, border: `1px solid ${uc.border}` }}
+                    >
+                      {uc.icon}
+                    </div>
+                    <p className="mb-1 font-display font-semibold text-white">{uc.label}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#64748b' }}>{uc.desc}</p>
+                    <p
+                      className="mt-3 text-xs font-medium transition-colors"
+                      style={{ color: '#334155' }}
+                    >
+                      See the workflow →
+                    </p>
+                  </Link>
+                </Reveal>
+              ))}
+            </div>
+
+            <Reveal delay={200}>
+              <Link
+                href="/use-cases"
+                className="btn-ghost-blue inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold"
+                style={{ color: '#a7f3d0' }}
+              >
+                Explore all real-world workflows →
+              </Link>
+            </Reveal>
+          </section>
+
           {/* ── Final CTA ────────────────────────────────────────────────────── */}
           <section className="mx-auto max-w-4xl px-4 pb-32 pt-8 text-center">
             <Reveal>

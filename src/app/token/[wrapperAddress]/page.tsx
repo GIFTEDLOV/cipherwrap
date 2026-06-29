@@ -490,6 +490,25 @@ export default function TokenDetailPage() {
         </div>
       </div>
 
+      {/* ── Use-case context ───────────────────────────────────────────────── */}
+      <div className="mb-5 flex flex-wrap items-center gap-2 rounded-xl border border-space-700/30 bg-space-800/30 px-4 py-3 backdrop-blur-sm">
+        <span className="text-xs text-slate-600">Used for:</span>
+        {['Private invoices', 'Payroll', 'Investor distributions'].map((tag) => (
+          <span
+            key={tag}
+            className="rounded bg-space-700/60 px-2 py-0.5 text-xs text-slate-400"
+          >
+            {tag}
+          </span>
+        ))}
+        <Link
+          href="/use-cases"
+          className="ml-auto shrink-0 text-xs text-slate-600 underline underline-offset-2 transition-colors hover:text-slate-400"
+        >
+          See workflows →
+        </Link>
+      </div>
+
       {/* ── Wallet / network gates ──────────────────────────────────────────── */}
       {!isConnected && (
         <div className="mb-5 flex items-center justify-between gap-3 rounded-xl border border-space-700/40 bg-space-800/40 px-4 py-3 backdrop-blur-sm">
